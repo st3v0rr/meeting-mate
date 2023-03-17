@@ -34,5 +34,8 @@
 		"vitest": "^0.25.3"
 	},
 	"type": "module",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+		"@sveltejs/adapter-static": "^2.0.1"
+	}
 }
