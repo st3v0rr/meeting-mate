@@ -73,6 +73,10 @@
             </div>
         </div>
         <progress value={$timer/original} class="progress"></progress>
+
+        <div class="progress">
+            <div class="progress-value"></div>
+        </div>
     </div>
     <!-- 	feel free to modify this text!! -->
 </main>
@@ -127,16 +131,6 @@
         width: 100%;
         max-width: 350px;
         margin-bottom: 2rem;
-
     }
 
-    @-webkit-keyframes moving-gradient {
-        0% {
-            background-position: left bottom;
-        }
-
-        100% {
-            background-position: right bottom;
-        }
-    }
 </style>
