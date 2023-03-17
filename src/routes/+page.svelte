@@ -4,6 +4,7 @@
 	import Countdown from './Countdown.svelte';
 	import MateList from './MemberList.svelte';
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png';
+	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 </script>
 
 <svelte:head>
@@ -12,21 +13,35 @@
 </svelte:head>
 
 <section>
-	<a href="/settings">settings</a>
-	<img src={TribeclubLogo} alt="Logo of TribeClub"/>
-	<Clock />
+	<a class="settings" href="/settings"><MdSettings /></a>
+	<header>
+		<img src={TribeclubLogo} alt="Logo of TribeClub"/>
+		<Clock />
+	</header>
 	<Countdown />
 	<MateList />
 	<Notes />
 </section>
 
 <style>
+	.settings {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		color: black;
+		height: 40px;
+	}
 	section {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		flex: 0.6;
+	}
+
+	header {
+		text-align: center;
+		margin-bottom: 10rem;
 	}
 
 	h1 {
