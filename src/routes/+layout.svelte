@@ -1,7 +1,19 @@
-<script lang="ts">
+<script lang="ts" context="module">
+	declare var document: any;
 	import './styles.css';
-	import { membersPresent, members } from '../stores/members'
 
+</script>
+
+
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { members } from '../stores/members';
+
+	onMount(() => {
+		const membersString = new URLSearchParams(document.location.search).get('members') || '';
+		const parsedMembers = membersString.split(',').map(m => ({name: m, present: true}))
+		members.set(parsedMembers)
+	} ) 
 
 </script>
 

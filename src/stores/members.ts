@@ -1,6 +1,7 @@
 import { writable, type Writable, derived } from 'svelte/store';
 
 const values: Writable<Member[]> = writable([]);
+import { page } from '$app/stores'
 
 values.set([
 	{ name: 'Jana', present: true },
@@ -13,7 +14,7 @@ values.set([
 	{ name: 'Stefan', present: true },
 	{ name: 'Thomas', present: true },
 	{ name: 'Flo', present: true },
-    { name: 'Eva', present: true },
+	{ name: 'Eva', present: true },
 	{ name: 'Nina', present: true }
 ]);
 
@@ -27,18 +28,32 @@ const shuffle = () => {
 };
 
 const togglePresence = (name: string) => {
-    console.log(name)
-    values.update((m) => {
-        console.log(JSON.stringify(m, null, 2))
-        return m.map(v => v.name === name ? {...v, present: !v.present} : v)
-    }
-    )
-}
+	values.update((m) => {
+		return m.map((v) => (v.name === name ? { ...v, present: !v.present } : v));
+	});
+};
+
+const add = (name: string) => {
+	values.update((m) => {
+        if (m.some((x) => x.name === name)) {
+            return m
+        }
+		return [...m, {name, present: true}];
+	});
+};
+
+const remove = (name: string) => {
+	values.update((m) => {
+		return m.filter((v) => v.name !== name);
+	});
+};
 
 export const members = {
 	...values,
 	shuffle,
-    togglePresence
+	togglePresence,
+	remove,
+    add
 };
 
 interface Member {
@@ -46,7 +61,8 @@ interface Member {
 	present: boolean;
 }
 
-export const membersSorted = derived(values, $values => $values.sort((a,b) => a.name < b.name ? -1 : 1))
+export const membersSorted = derived(values, ($values) =>
+	$values.sort((a, b) => (a.name < b.name ? -1 : 1))
+);
 
-export const membersPresent = derived(values, $values => $values.filter(a => a.present))
-
+export const membersPresent = derived(values, ($values) => $values.filter((a) => a.present));
