@@ -13,24 +13,40 @@
 </svelte:head>
 
 <section>
-	<a class="settings" href="/settings"><MdSettings /></a>
-	<header>
-		<img src={TribeclubLogo} alt="Logo of TribeClub"/>
+	<header class="menu">
+		<div class="logo">
+			<img src={TribeclubLogo} alt="Logo of TribeClub"/>
+		</div>
 		<Clock />
+		<a class="settings" href="/settings"><MdSettings /></a>
 	</header>
 	<Countdown />
 	<MateList />
-	<Notes />
+	<!--Notes /-->
 </section>
 
 <style>
+	.menu {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		text-align: center;
+		margin-bottom: 5vh;
+	}
+
+	.logo {
+		width: 15%;
+	}
+	.logo > img {
+		height: 80px;
+	}
 	.settings {
-		position: absolute;
-		top: 10px;
-		right: 10px;
+		width: 15%;
 		color: black;
 		height: 40px;
 	}
+
 	section {
 		display: flex;
 		flex-direction: column;
@@ -39,28 +55,4 @@
 		flex: 0.6;
 	}
 
-	header {
-		text-align: center;
-		margin-bottom: 10rem;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
 </style>

@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+  import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
 	declare var document: any;
 
 </script>
@@ -12,7 +13,7 @@
 
     onMount(() => {
 		url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
-	} ) 
+	} )
 
     // $: url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
 
@@ -38,8 +39,9 @@
 </svelte:head>
 
 <section>
-	<h1>Settings</h1>
-    <a href="/">Back</a>
+  <a class="icon" href="/"><TiArrowBack /></a>
+  <h1>Settings</h1>
+
     <h2>Members</h2>
 		{#each $membersSorted as member}
 		<label>
@@ -70,19 +72,8 @@
 		width: 100%;
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
+  .icon {
+    color: black;
+    height: 40px;
+  }
 </style>

@@ -71,8 +71,8 @@
 		text-align: center;
 	}
 	svg {
-		width: 50%;
-		height: 50%;
+		width: 80%;
+		height: 80%;
 	}
 
 	.clock-face {
@@ -101,7 +101,7 @@
 	}
 
 	.second, .second-counterweight {
-		stroke: deeppink;
+		stroke: #c65451;
 	}
 
 	.second-counterweight {
