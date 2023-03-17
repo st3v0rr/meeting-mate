@@ -6,6 +6,7 @@
 
     let original = 1 * 60; // TYPE NUMBER OF SECONDS HERE
     let timer = tweened(original)
+    console.log(original);
     let countdownInterval = setInterval(() => {
         if ($timer > 0) {
             $timer--;
@@ -25,7 +26,6 @@
             }, 1000);
             running = true;
         }
-
     }
 
     const stopTimer = () => {
@@ -34,6 +34,17 @@
         running = false;
     }
 
+    const setMinutes = (event) => {
+        original = parseInt(event.target.value) * 60 + seconds;
+        timer = tweened(original);
+        running = false;
+    }
+
+    const setSeconds = (event) => {
+        original = (minutes * 60) + parseInt(event.target.value);
+        timer = tweened(original);
+        running = false;
+    }
 
     $: minutes = Math.floor($timer / 60);
     $: seconds = Math.floor($timer - minutes * 60)
@@ -43,7 +54,6 @@
     <div class="container">
         <div class="timercontainer">
             <div class="buttongroup">
-
                 {#if running}
                     <span on:click="{startOrPauseTimer}"><FaRegPauseCircle/></span>
                 {:else}
@@ -53,15 +63,16 @@
             </div>
             <div class="timer">
                 <input type="number" class="digits" value="{('0'+minutes).slice(-2)}"
-                       min="0" max="60" on:click="{() => clearInterval(countdownInterval)}"/>
+                       min="0" max="60"
+                       on:blur="{(event) => setMinutes(event)}"
+                       on:click="{() => clearInterval(countdownInterval)}"/>
                 <span class="divider">:</span>
                 <input type="number" class="digits secs" value="{('0'+seconds).slice(-2)}"
+                       on:blur="{(event) => setSeconds(event)}"
                        min="0" max="60" on:click="{() => clearInterval(countdownInterval)}"/>
             </div>
         </div>
-        <div class="progresscontainer">
-            <progress value={$timer/original} class="progress"></progress>
-        </div>
+        <progress value={$timer/original} class="progress"></progress>
     </div>
     <!-- 	feel free to modify this text!! -->
 </main>
@@ -98,7 +109,7 @@
     }
 
     .secs {
-        font-size: 3rem;
+        margin-left: 16px;
     }
 
     .divider {
@@ -109,18 +120,23 @@
     .timer {
         display: flex;
         align-items: flex-end;
-        width: 50%;
-    }
-
-    .progresscontainer {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 2rem;
+        width: 60%;
     }
 
     .progress {
         width: 100%;
         max-width: 350px;
+        margin-bottom: 2rem;
+
+    }
+
+    @-webkit-keyframes moving-gradient {
+        0% {
+            background-position: left bottom;
+        }
+
+        100% {
+            background-position: right bottom;
+        }
     }
 </style>
