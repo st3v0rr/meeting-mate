@@ -1,34 +1,14 @@
 <script lang="ts">
-	import { spring } from 'svelte/motion';
-
-	let mates = ['Jana','Gunnar','Andi','Nicole','Nadja','Tobi','Annina','Stefan','Thomas','Flo','Nina']
-
-	let count = 0;
-
-	// export let liste = []
-
-	const displayed_count = spring();
-	// Rerender when new input
-	$: displayed_count.set(count);
-	$: offset = modulo($displayed_count, 1);
-
-	function modulo(n: number, m: number) {
-		// handle negative numbers
-		return ((n % m) + m) % m;
-	}
-
-	function shuffleMates() {
-		mates = mates.map(x => ([x, Math.random()])).sort((a,b) => a[1] - b[1]).map(x => (x[0]))
-	}
+	import { membersPresent, members } from '../stores/members'
 </script>
 
-<div class="mateList">
-	<button on:click={shuffleMates}>Shuffle</button>
-	<ul>
-		{#each mates as mate}
-		<li>{mate}</li>
-		{/each}
-	</ul>
+<div class="memberList">
+	<button on:click={members.shuffle}>Shuffle</button>
+	{#each $membersPresent as member}
+	<div>
+		{member.name}
+	</div>
+	{/each}
 </div>
 
 <style>

@@ -1,8 +1,10 @@
-<script>
+<script lang="ts">
 	import './styles.css';
+	import { membersPresent, members } from '../stores/members'
 </script>
 
 <div class="app">
+	<!-- <div>{JSON.stringify($members, null,2)}</div> -->
 
 	<main>
 		<slot />

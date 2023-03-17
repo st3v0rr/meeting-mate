@@ -1,9 +1,5 @@
 <script>
-	import Clock from './Clock.svelte';
-	import Notes from './Notes.svelte';
-	import Countdown from './Countdown.svelte';
-	import MateList from './MemberList.svelte';
-	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png';
+    import { membersSorted, members } from "../../stores/members";
 </script>
 
 <svelte:head>
@@ -12,12 +8,16 @@
 </svelte:head>
 
 <section>
-	<a href="/settings">settings</a>
-	<img src={TribeclubLogo} alt="Logo of TribeClub"/>
-	<Clock />
-	<Countdown />
-	<MateList />
-	<Notes />
+	<h1>Settings</h1>
+    <a href="/">Back</a>
+    <h2>Members</h2>
+		{#each $membersSorted as member}
+		<label>
+            <input on:click={() => members.togglePresence(member.name)} type="checkbox" checked={member.present}/>
+            <input value={member.name}/>
+        </label>
+		{/each}
+
 </section>
 
 <style>
