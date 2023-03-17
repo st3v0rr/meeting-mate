@@ -1,17 +1,55 @@
 <script lang="ts">
 	import { membersPresent, members } from '../stores/members'
+	import IoIosShuffle from 'svelte-icons/io/IoIosShuffle.svelte'
 </script>
 
-<div class="memberList">
-	<button on:click={members.shuffle}>Shuffle</button>
-	{#each $membersPresent as member}
-	<div>
-		{member.name}
-	</div>
+<div class="members">
+	
+	<div class="memberList">
+	{#each $membersPresent as member, i}
+	<div class="member">{member.name} {#if i === 0} <span class="icon" on:click={members.shuffle}><IoIosShuffle/></span>{/if}</div>
 	{/each}
+</div>
 </div>
 
 <style>
+	.memberList div:first-child {
+		background-color: #F6CEE1;
+	}
+
+	.members {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.members > span {
+		height: 30px;
+	}
+
+	.member {
+		background-color: white;
+		width: 100%;
+		margin: 2px 0 2px 0;
+		padding: 2px 1em 2px 1em;
+		border: 1px solid rgb(242, 242, 242);
+		border-radius: 5px;
+		display: flex;
+		height: 30px;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.icon {
+		width: 30px;
+		cursor: pointer;
+		opacity: 0.8;
+	}
+
+	.icon:hover {
+		opacity: 1;
+	}
+
 	.counter {
 		display: flex;
 		border-top: 1px solid rgba(0, 0, 0, 0.1);
