@@ -52,11 +52,11 @@
                 <span on:click="{stopTimer}"><FaCreativeCommonsSa/></span>
             </div>
             <div class="timer">
-                <input type="number" class="mins" value="{('0'+minutes).slice(-2)}"
-                       on:click="{() => clearInterval(countdownInterval)}"/>
+                <input type="number" class="digits" value="{('0'+minutes).slice(-2)}"
+                       min="0" max="60" on:click="{() => clearInterval(countdownInterval)}"/>
                 <span class="divider">:</span>
-                <input type="number" class="secs" value="{('0'+seconds).slice(-2)}"
-                       on:click="{() => clearInterval(countdownInterval)}"/>
+                <input type="number" class="digits secs" value="{('0'+seconds).slice(-2)}"
+                       min="0" max="60" on:click="{() => clearInterval(countdownInterval)}"/>
             </div>
         </div>
         <div class="progresscontainer">
@@ -67,9 +67,6 @@
 </main>
 
 <style>
-    .container {
-
-    }
 
     .buttongroup {
         display: flex;
@@ -92,7 +89,7 @@
         align-content: end;
     }
 
-    .mins {
+    .digits {
         background: none;
         border: none;
         text-align: center;
@@ -101,12 +98,7 @@
     }
 
     .secs {
-        background: none;
-        border: none;
-        text-align: center;
         font-size: 3rem;
-        padding-bottom: 5px;
-        max-width: 100px;
     }
 
     .divider {
@@ -128,7 +120,7 @@
     }
 
     .progress {
-        width: 80%;
+        width: 100%;
         max-width: 350px;
     }
 </style>
