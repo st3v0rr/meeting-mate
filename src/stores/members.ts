@@ -1,6 +1,6 @@
-import { writable, type Writable, derived } from 'svelte/store';
+import { writable, type Writable, derived } from 'svelte/store'
 
-const values: Writable<Member[]> = writable([]);
+const values: Writable<Member[]> = writable([])
 import { page } from '$app/stores'
 
 values.set([
@@ -16,7 +16,7 @@ values.set([
 	{ name: 'Flo', present: true },
 	{ name: 'Eva', present: true },
 	{ name: 'Nina', present: true }
-]);
+])
 
 const shuffle = () => {
 	values.update((m) =>
@@ -24,45 +24,45 @@ const shuffle = () => {
 			.map((x) => ({ mate: x, order: Math.random() }))
 			.sort((a, b) => a.order - b.order)
 			.map((x) => x.mate)
-	);
-};
+	)
+}
 
 const togglePresence = (name: string) => {
 	values.update((m) => {
-		return m.map((v) => (v.name === name ? { ...v, present: !v.present } : v));
-	});
-};
+		return m.map((v) => (v.name === name ? { ...v, present: !v.present } : v))
+	})
+}
 
 const add = (name: string) => {
 	values.update((m) => {
-        if (m.some((x) => x.name === name)) {
-            return m
-        }
-		return [...m, {name, present: true}];
-	});
-};
+		if (m.some((x) => x.name === name)) {
+			return m
+		}
+		return [...m, { name, present: true }]
+	})
+}
 
 const remove = (name: string) => {
 	values.update((m) => {
-		return m.filter((v) => v.name !== name);
-	});
-};
+		return m.filter((v) => v.name !== name)
+	})
+}
 
 export const members = {
 	...values,
 	shuffle,
 	togglePresence,
 	remove,
-    add
-};
+	add
+}
 
 interface Member {
-	name: string;
-	present: boolean;
+	name: string
+	present: boolean
 }
 
 export const membersSorted = derived(values, ($values) =>
 	$values.sort((a, b) => (a.name < b.name ? -1 : 1))
-);
+)
 
-export const membersPresent = derived(values, ($values) => $values.filter((a) => a.present));
+export const membersPresent = derived(values, ($values) => $values.filter((a) => a.present))

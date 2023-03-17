@@ -4,17 +4,19 @@
 </script>
 
 <div class="members">
-	
 	<div class="memberList">
-	{#each $membersPresent as member, i}
-	<div class="member">{member.name} {#if i === 0} <span class="icon" on:click={members.shuffle}><IoIosShuffle/></span>{/if}</div>
-	{/each}
-</div>
+		{#each $membersPresent as member, i}
+			<div class="member">
+				{member.name}
+				{#if i === 0} <span class="icon" on:click={members.shuffle}><IoIosShuffle /></span>{/if}
+			</div>
+		{/each}
+	</div>
 </div>
 
 <style>
 	.memberList div:first-child {
-		background-color: #F6CEE1;
+		background-color: #f6cee1;
 	}
 
 	.members {

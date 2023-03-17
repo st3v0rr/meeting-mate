@@ -1,36 +1,33 @@
 <script lang="ts" context="module">
-  import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
-	declare var document: any;
-
+	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
+	declare var document: any
 </script>
 
-<script lang='ts' >
-    import { membersSorted, members } from "../../stores/members";
-    import { onMount } from 'svelte';
+<script lang="ts">
+	import { membersSorted, members } from '../../stores/members'
+	import { onMount } from 'svelte'
 
-    let newMemberName = '';
-    let url = '';
+	let newMemberName = ''
+	let url = ''
 
-    onMount(() => {
-		url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
-	} )
+	onMount(() => {
+		url = `${document.location.host}?members=${$members.map((m) => m.name).join(',')}`
+	})
 
-    // $: url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
+	// $: url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
 
-    const addNewMember = () => {
-        if (newMemberName !== '')  {
-            members.add(newMemberName)
-            newMemberName = ''
-        }
-    }
+	const addNewMember = () => {
+		if (newMemberName !== '') {
+			members.add(newMemberName)
+			newMemberName = ''
+		}
+	}
 
-    const copyUrlToClipboard = () => {
-        const domain = document.location;
+	const copyUrlToClipboard = () => {
+		const domain = document.location
 
-        navigator.clipboard.writeText(url);
-    }
-
-
+		navigator.clipboard.writeText(url)
+	}
 </script>
 
 <svelte:head>
@@ -39,24 +36,29 @@
 </svelte:head>
 
 <section>
-  <a class="icon" href="/"><TiArrowBack /></a>
-  <h1>Settings</h1>
+	<a class="icon" href="/"><TiArrowBack /></a>
+	<h1>Settings</h1>
 
-    <h2>Members</h2>
-		{#each $membersSorted as member}
+	<h2>Members</h2>
+	{#each $membersSorted as member}
 		<label>
-            <input on:click={() => members.togglePresence(member.name)} type="checkbox" checked={member.present}/>
-            <input value={member.name}/>
-            <button on:click={() => members.remove(member.name)}>X</button>
-        </label>
-		{/each}
-        <div>
-            <input bind:value={newMemberName}/>
-            <button on:click={addNewMember}>+</button>
-        </div>
+			<input
+				on:click={() => members.togglePresence(member.name)}
+				type="checkbox"
+				checked={member.present}
+			/>
+			<input value={member.name} />
+			<button on:click={() => members.remove(member.name)}>X</button>
+		</label>
+	{/each}
+	<div>
+		<input bind:value={newMemberName} />
+		<button on:click={addNewMember}>+</button>
+	</div>
 
-        <div>URL: <input value={url}/><button on:click={copyUrlToClipboard}>Copy to clipboard</button></div>
-
+	<div>
+		URL: <input value={url} /><button on:click={copyUrlToClipboard}>Copy to clipboard</button>
+	</div>
 </section>
 
 <style>
@@ -72,8 +74,8 @@
 		width: 100%;
 	}
 
-  .icon {
-    color: black;
-    height: 40px;
-  }
+	.icon {
+		color: black;
+		height: 40px;
+	}
 </style>

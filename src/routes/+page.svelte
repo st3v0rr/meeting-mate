@@ -1,9 +1,9 @@
 <script>
-	import Clock from './Clock.svelte';
-	import Notes from './Notes.svelte';
-	import Countdown from './Countdown.svelte';
-	import MateList from './MemberList.svelte';
-	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png';
+	import Clock from './Clock.svelte'
+	import Notes from './Notes.svelte'
+	import Countdown from './Countdown.svelte'
+	import MateList from './MemberList.svelte'
+	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 </script>
 
@@ -15,7 +15,7 @@
 <section>
 	<header class="menu">
 		<div class="logo">
-			<img src={TribeclubLogo} alt="Logo of TribeClub"/>
+			<img src={TribeclubLogo} alt="Logo of TribeClub" />
 		</div>
 		<Clock />
 		<a class="settings" href="/settings"><MdSettings /></a>
@@ -54,5 +54,4 @@
 		align-items: center;
 		flex: 0.6;
 	}
-
 </style>
