@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { spring } from 'svelte/motion';
 
+	let mates = ['Jana','Gunnar','Andi','Nicole','Nadja','Tobi','Annina','Stefan','Thomas','Flo','Nina']
+
 	let count = 0;
 
 	// export let liste = []
@@ -14,21 +16,18 @@
 		// handle negative numbers
 		return ((n % m) + m) % m;
 	}
+
+	function shuffleMates() {
+		mates = mates.map(x => ([x, Math.random()])).sort((a,b) => a[1] - b[1]).map(x => (x[0]))
+	}
 </script>
 
 <div class="mateList">
+	<button on:click={shuffleMates}>Shuffle</button>
 	<ul>
-		<li>Jana</li>
-		<li>Gunnar</li>
-		<li>Andi</li>
-		<li>Nicole</li>
-		<li>Nadja</li>
-		<li>Tobi</li>
-		<li>Annina</li>
-		<li>Stefan</li>
-		<li>Thomas</li>
-		<li>Flo</li>
-		<li>Nina</li>
+		{#each mates as mate}
+		<li>{mate}</li>
+		{/each}
 	</ul>
 </div>
 

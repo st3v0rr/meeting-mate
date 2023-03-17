@@ -1,32 +1,22 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import Clock from './Clock.svelte';
+	import Notes from './Notes.svelte';
+	import Countdown from './Countdown.svelte';
 	import MateList from './MateList.svelte';
+	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png';
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Meeting Mate</title>
+	<meta name="description" content="adorsys Meeting Mate" />
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />Meeting mate
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
+	<img src={TribeclubLogo} alt="Logo of TribeClub"/>
+	<Clock />
+	<Countdown />
 	<MateList />
+	<Notes />
 </section>
 
 <style>
