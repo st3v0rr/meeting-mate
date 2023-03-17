@@ -1,6 +1,8 @@
 <script lang="ts">
 	import './styles.css';
 	import { membersPresent, members } from '../stores/members'
+
+
 </script>
 
 <div class="app">
