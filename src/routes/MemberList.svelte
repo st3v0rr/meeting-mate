@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { membersPresent, members } from '../stores/members'
+	import { members } from '../stores/members'
 	import IoIosShuffle from 'svelte-icons/io/IoIosShuffle.svelte'
+
+	$: membersPresentAndRanked = $members.filter((a) => a.present).sort((a, b) => a.rank - b.rank)
 </script>
 
 <div class="members">
 	<div class="memberList">
-		{#each $membersPresent as member, i}
+		{#each membersPresentAndRanked as member, i}
 			<div class="member">
 				{member.name}
 				{#if i === 0} <span class="icon" on:click={members.shuffle}><IoIosShuffle /></span>{/if}

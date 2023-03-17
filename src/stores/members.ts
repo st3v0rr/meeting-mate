@@ -1,68 +1,50 @@
 import { writable, type Writable, derived } from 'svelte/store'
 
-const values: Writable<Member[]> = writable([])
-import { page } from '$app/stores'
-
-values.set([
-	{ name: 'Jana', present: true },
-	{ name: 'Gunnar', present: true },
-	{ name: 'Andi', present: true },
-	{ name: 'Nicole', present: true },
-	{ name: 'Nadja', present: true },
-	{ name: 'Tobi', present: true },
-	{ name: 'Annina', present: true },
-	{ name: 'Stefan', present: true },
-	{ name: 'Thomas', present: true },
-	{ name: 'Flo', present: true },
-	{ name: 'Eva', present: true },
-	{ name: 'Nina', present: true }
-])
-
-const shuffle = () => {
-	values.update((m) =>
-		m
-			.map((x) => ({ mate: x, order: Math.random() }))
-			.sort((a, b) => a.order - b.order)
-			.map((x) => x.mate)
-	)
-}
-
-const togglePresence = (name: string) => {
-	values.update((m) => {
-		return m.map((v) => (v.name === name ? { ...v, present: !v.present } : v))
-	})
-}
-
-const add = (name: string) => {
-	values.update((m) => {
-		if (m.some((x) => x.name === name)) {
-			return m
-		}
-		return [...m, { name, present: true }]
-	})
-}
-
-const remove = (name: string) => {
-	values.update((m) => {
-		return m.filter((v) => v.name !== name)
-	})
-}
-
-export const members = {
-	...values,
-	shuffle,
-	togglePresence,
-	remove,
-	add
-}
-
 interface Member {
 	name: string
 	present: boolean
+	rank: number
 }
 
-export const membersSorted = derived(values, ($values) =>
-	$values.sort((a, b) => (a.name < b.name ? -1 : 1))
-)
+const tribeClub = [
+	'Andi',
+	'Annina',
+	'Eva',
+	'Flo',
+	'Gunnar',
+	'Jana',
+	'Nadja',
+	'Nicole',
+	'Nina',
+	'Stefan',
+	'Thomas',
+	'Tobi'
+]
 
-export const membersPresent = derived(values, ($values) => $values.filter((a) => a.present))
+const randomizeRank = (x: Member) => ({ ...x, rank: Math.random() })
+
+const togglePresence = (x: Member) => ({ ...x, present: !x.present })
+
+const createMember = (name: string) => ({ name, present: true, rank: Math.random() })
+
+const shuffle = () => store.update((xs) => xs.map(randomizeRank))
+const toggle = (name: string) =>
+	store.update((xs) => xs.map((x) => (x.name === name ? togglePresence(x) : x)))
+const add = (name: string) =>
+	store.update((xs) => (xs.some((x) => x.name === name) ? xs : [...xs, createMember(name)]))
+const remove = (name: string) => store.update((xs) => xs.filter((x) => x.name !== name))
+const setMembers = (members: Array<string>) => store.set(members.map(createMember))
+const setTribeClub = () => store.set(tribeClub.map(createMember))
+
+const store: Writable<Member[]> = writable([])
+
+export const members = {
+	...store,
+	set: undefined,
+	setMembers,
+	setTribeClub,
+	shuffle,
+	toggle,
+	remove,
+	add
+}

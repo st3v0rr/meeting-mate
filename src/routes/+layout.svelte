@@ -8,15 +8,19 @@
 	import { members } from '../stores/members'
 
 	onMount(() => {
-		const membersString = new URLSearchParams(document.location.search).get('members') || ''
-		const parsedMembers = membersString.split(',').map((m) => ({ name: m, present: true }))
-		members.set(parsedMembers)
+		const params = new URLSearchParams(document.location.search)
+		if (params.has('members')) {
+			const membersString = params.get('members') || ''
+			if (membersString) {
+				members.setMembers(membersString.split(','))
+			}
+		} else if (params.has('tc')) {
+			members.setTribeClub()
+		}
 	})
 </script>
 
 <div class="app">
-	<!-- <div>{JSON.stringify($members, null,2)}</div> -->
-
 	<main>
 		<slot />
 	</main>

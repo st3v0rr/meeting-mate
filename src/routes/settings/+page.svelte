@@ -1,18 +1,24 @@
 <script lang="ts" context="module">
-	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
 	declare var document: any
 </script>
 
 <script lang="ts">
-	import { membersSorted, members } from '../../stores/members'
+	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
+	import { members } from '../../stores/members'
 	import { onMount } from 'svelte'
+	import { writable, type Writable, derived } from 'svelte/store'
 
-	let newMemberName = ''
-	let url = ''
+	const host = writable('')
+
+	$: membersSorted = $members.sort((a, b) => (a.name < b.name ? -1 : 1))
+	$: membersParam = `members=${$members.map((x) => x.name).join(',')}`
+	$: url = `${$host}?${membersParam}`
 
 	onMount(() => {
-		url = `${document.location.host}?members=${$members.map((m) => m.name).join(',')}`
+		host.set(document.location.host)
 	})
+
+	let newMemberName = ''
 
 	// $: url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
 
@@ -23,11 +29,7 @@
 		}
 	}
 
-	const copyUrlToClipboard = () => {
-		const domain = document.location
-
-		navigator.clipboard.writeText(url)
-	}
+	const copyUrlToClipboard = () => navigator.clipboard.writeText(url)
 </script>
 
 <svelte:head>
@@ -40,10 +42,10 @@
 	<h1>Settings</h1>
 
 	<h2>Members</h2>
-	{#each $membersSorted as member}
+	{#each membersSorted as member}
 		<label>
 			<input
-				on:click={() => members.togglePresence(member.name)}
+				on:click={() => members.toggle(member.name)}
 				type="checkbox"
 				checked={member.present}
 			/>
@@ -57,7 +59,9 @@
 	</div>
 
 	<div>
-		URL: <input value={url} /><button on:click={copyUrlToClipboard}>Copy to clipboard</button>
+		URL: {url}<button disabled={!membersParam} on:click={copyUrlToClipboard}
+			>Copy to clipboard</button
+		>
 	</div>
 </section>
 
