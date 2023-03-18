@@ -1,8 +1,8 @@
 <script xmlns="http://www.w3.org/1999/html">
 	import { tweened } from 'svelte/motion'
-	import FaRegPauseCircle from 'svelte-icons/fa/FaRegPauseCircle.svelte'
-	import FaRegPlayCircle from 'svelte-icons/fa/FaRegPlayCircle.svelte'
-	import FaCreativeCommonsSa from 'svelte-icons/fa/FaCreativeCommonsSa.svelte'
+	import TiMediaPauseOutline from 'svelte-icons/ti/TiMediaPause.svelte'
+	import TiMediaPlayOutline from 'svelte-icons/ti/TiMediaPlay.svelte'
+	import TiRefreshOutline from 'svelte-icons/ti/TiRefresh.svelte'
 
 	let original = 1 * 60 // TYPE NUMBER OF SECONDS HERE
 	let timer = tweened(original)
@@ -55,11 +55,11 @@
 		<div class="timercontainer">
 			<div class="buttongroup">
 				{#if running}
-					<span on:click={startOrPauseTimer}><FaRegPauseCircle /></span>
+					<span on:click={startOrPauseTimer}><TiMediaPauseOutline /></span>
 				{:else}
-					<span on:click={startOrPauseTimer}><FaRegPlayCircle /></span>
+					<span on:click={startOrPauseTimer}><TiMediaPlayOutline /></span>
 				{/if}
-				<span on:click={stopTimer}><FaCreativeCommonsSa /></span>
+				<span on:click={stopTimer}><TiRefreshOutline /></span>
 			</div>
 			<div class="timer">
 				<input

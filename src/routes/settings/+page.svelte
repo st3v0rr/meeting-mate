@@ -3,20 +3,18 @@
 </script>
 
 <script lang="ts">
-	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
+	import TiTimesOutline from 'svelte-icons/ti/TiTimes.svelte'
 	import { members } from '../../stores/members'
 	import { onMount } from 'svelte'
-	import { writable, type Writable, derived } from 'svelte/store'
+	import { writable } from 'svelte/store'
 
-	const host = writable('')
+	const baseUrl = writable('')
 
 	$: membersSorted = $members.sort((a, b) => (a.name < b.name ? -1 : 1))
 	$: membersParam = `members=${$members.map((x) => x.name).join(',')}`
-	$: url = `${$host}?${membersParam}`
+	$: url = `${$baseUrl}?${membersParam}`
 
-	onMount(() => {
-		host.set(document.location.host)
-	})
+	onMount(() => baseUrl.set(`${document.location.protocol}//${document.location.host}`))
 
 	let newMemberName = ''
 
@@ -38,7 +36,7 @@
 </svelte:head>
 
 <section>
-	<a class="icon" href="/"><TiArrowBack /></a>
+	<a class="icon" href="/"><TiTimesOutline /></a>
 	<h1>Settings</h1>
 
 	<h2>Members</h2>

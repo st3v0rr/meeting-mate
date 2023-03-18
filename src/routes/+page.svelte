@@ -4,7 +4,7 @@
 	import Countdown from './Countdown.svelte'
 	import MateList from './MemberList.svelte'
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
-	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
+	import TiCogOutline from 'svelte-icons/ti/TiCog.svelte'
 </script>
 
 <svelte:head>
@@ -18,7 +18,7 @@
 			<img src={TribeclubLogo} alt="Logo of TribeClub" />
 		</div>
 		<Clock />
-		<a class="settings" href="/settings"><MdSettings /></a>
+		<a class="settings" href="/settings"><TiCogOutline /></a>
 	</header>
 	<Countdown />
 	<MateList />
