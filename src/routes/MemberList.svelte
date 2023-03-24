@@ -42,6 +42,8 @@
 		height: 30px;
 		justify-content: space-between;
 		align-items: center;
+		font-size: 16pt;
+		font-weight: bold;
 	}
 
 	.icon {
