@@ -84,10 +84,6 @@
 			</div>
 		</div>
 		<progress value={$timer / original} class="progress" />
-
-		<div class="progress">
-			<div class="progress-value" />
-		</div>
 	</div>
 	<!-- 	feel free to modify this text!! -->
 </main>
@@ -137,9 +133,25 @@
 		width: 60%;
 	}
 
-	.progress {
+	progress {
+		border-radius: 7px; 
 		width: 100%;
-		max-width: 350px;
+		height: 10px;
 		margin-bottom: 2rem;
+		box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
+	}
+
+	progress::-webkit-progress-bar {
+		background-color: #ffffff;
+		border-radius: 7px;
+	}
+
+	progress::-webkit-progress-value {
+		background-color: #c55451;
+		border-radius: 7px;
+		box-shadow: 1px 1px 2px 2px rgba( 197, 84, 81, 0.8 );
+	}
+	progress::-moz-progress-bar {
+		/* style rules */
 	}
 </style>

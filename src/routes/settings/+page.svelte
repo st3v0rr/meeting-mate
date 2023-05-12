@@ -3,7 +3,14 @@
 </script>
 
 <script lang="ts">
-	import TiTimesOutline from 'svelte-icons/ti/TiTimes.svelte'
+	import TiTimes from 'svelte-icons/ti/TiTimes.svelte'
+	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
+	import TiInputChecked from 'svelte-icons/ti/TiInputChecked.svelte'
+	import TiUserAdd from 'svelte-icons/ti/TiUserAdd.svelte'
+	import TiUserDelete from 'svelte-icons/ti/TiUserDelete.svelte'
+	import TiPlus from 'svelte-icons/ti/TiPlus.svelte'
+	import TiDelete from 'svelte-icons/ti/TiDelete.svelte'
+	import TiCancel from 'svelte-icons/ti/TiCancel.svelte'
 	import { members } from '../../stores/members'
 	import { onMount } from 'svelte'
 	import { writable } from 'svelte/store'
@@ -36,24 +43,20 @@
 </svelte:head>
 
 <section>
-	<a class="icon" href="/"><TiTimesOutline /></a>
+	<a class="icon" href="/"><TiArrowBack /></a>
 	<h1>Settings</h1>
 
 	<h2>Members</h2>
 	{#each membersSorted as member}
-		<label>
-			<input
-				on:click={() => members.toggle(member.name)}
-				type="checkbox"
-				checked={member.present}
-			/>
-			<input value={member.name} />
-			<button on:click={() => members.remove(member.name)}>X</button>
-		</label>
+		<div class="row">
+			<button class="icon" on:click={() => members.toggle(member.name)}>{#if member.present}<TiInputChecked/>{:else}<TiCancel/>{/if}</button>
+			{member.name}
+			<button class="icon" on:click={() => members.remove(member.name)}><TiUserDelete/></button>
+		</div>
 	{/each}
-	<div>
+	<div class="row">
 		<input bind:value={newMemberName} />
-		<button on:click={addNewMember}>+</button>
+		<button class="icon" on:click={addNewMember}><TiUserAdd/></button>
 	</div>
 
 	<div>
@@ -64,6 +67,21 @@
 </section>
 
 <style>
+	.row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.icon {
+		height: 30px;
+		border: 8px solid #00000000;
+		background-color: #00000000;
+	}
+	.icon:hover {
+		border: 1px solid lightgray;
+		height: 40px;
+		border-radius: 5px;
+	}
 	section {
 		display: flex;
 		flex-direction: column;

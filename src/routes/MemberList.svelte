@@ -5,20 +5,24 @@
 	$: membersPresentAndRanked = $members.filter((a) => a.present).sort((a, b) => a.rank - b.rank)
 </script>
 
+<span class="icon" on:click={members.shuffle}><TiArrowShuffle /></span>
 <div class="members">
 	<div class="memberList">
 		{#each membersPresentAndRanked as member, i}
 			<div class="member">
 				{member.name}
-				{#if i === 0} <span class="icon" on:click={members.shuffle}><TiArrowShuffle /></span>{/if}
 			</div>
 		{/each}
 	</div>
 </div>
 
 <style>
-	.memberList div:first-child {
-		background-color: #f6cee1;
+	.memberList div:nth-child(odd) {
+		background-color: #cccccc;
+	}
+
+	.memberList div:nth-child(even) {
+		background-color: #e6e6e6;
 	}
 
 	.members {
@@ -36,7 +40,7 @@
 		width: 100%;
 		margin: 2px 0 2px 0;
 		padding: 2px 1em 2px 1em;
-		border: 1px solid rgb(242, 242, 242);
+		border: 1px solid lightgrey;
 		border-radius: 5px;
 		display: flex;
 		height: 30px;
