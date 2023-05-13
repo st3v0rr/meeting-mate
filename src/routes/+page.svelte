@@ -5,7 +5,7 @@
 	import MateList from './MemberList.svelte'
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
 	import TiCogOutline from 'svelte-icons/ti/TiCog.svelte'
-	import { theme } from '$stores/theme'
+	import themeStore from 'svelte-themes/themeStore'
 </script>
 
 <svelte:head>
@@ -15,7 +15,7 @@
 
 <section>
 	<header class="menu">
-		{#if $theme === 'tc'}
+		{#if $themeStore.theme === 'tribeclub'}
 			<div class="logo">
 				<img src={TribeclubLogo} alt="Logo of TribeClub" />
 			</div>

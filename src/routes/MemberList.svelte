@@ -18,11 +18,21 @@
 
 <style>
 	.memberList div:nth-child(odd) {
-		background-color: #cccccc;
+		background-color: #dddddd;
 	}
 
 	.memberList div:nth-child(even) {
-		background-color: #e6e6e6;
+		background-color: #6d96bc;
+	}
+
+	[data-theme='tribeclub'],
+	[data-theme='tribeclub'] .memberList div:nth-child(odd) {
+		background-color: #f6d6e6;
+	}
+
+	[data-theme='tribeclub'],
+	[data-theme='tribeclub'] .memberList div:nth-child(even) {
+		background-color: #ffe6ef;
 	}
 
 	.members {

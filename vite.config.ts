@@ -12,4 +12,7 @@ export default defineConfig({
 				{ find: '$stores', replacement: path.resolve(__dirname, 'src/stores') },
 		],
 	},
+	optimizeDeps: {
+    exclude: ['svelte-themes']
+  }
 })

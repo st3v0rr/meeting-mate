@@ -4,9 +4,10 @@
 </script>
 
 <script lang="ts">
+	import SvelteTheme from 'svelte-themes/SvelteTheme.svelte'
+	import { setTheme } from 'svelte-themes/themeStore'
 	import { onMount } from 'svelte'
 	import { members } from '../stores/members'
-	import { theme } from '../stores/theme'
 
 	onMount(() => {
 		const params = new URLSearchParams(document.location.search)
@@ -17,12 +18,15 @@
 			}
 		} else if (params.has('tc')) {
 			members.setTribeClub()
-			theme.set('tc')
+		} else {
+			members.setAdorsys()
 		}
+		setTheme(params.has('tc') ? 'tribeclub' : 'adorsys')
 	})
 </script>
 
 <div class="app">
+	<SvelteTheme themes={['adorsys', 'tribeclub']}/>
 	<main>
 		<slot />
 	</main>

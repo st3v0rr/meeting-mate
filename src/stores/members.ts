@@ -6,6 +6,13 @@ interface Member {
 	rank: number
 }
 
+const adorsys = [
+	'Thilo',
+	'Andrew',
+	'Kati',
+	'Francis',
+]
+
 const tribeClub = [
 	'Andi',
 	'Annina',
@@ -35,6 +42,7 @@ const add = (name: string) =>
 const remove = (name: string) => store.update((xs) => xs.filter((x) => x.name !== name))
 const setMembers = (members: Array<string>) => store.set(members.map(createMember))
 const setTribeClub = () => store.set(tribeClub.map(createMember))
+const setAdorsys = () => store.set(adorsys.map(createMember))
 
 const store: Writable<Member[]> = writable([])
 
@@ -43,6 +51,7 @@ export const members = {
 	set: undefined,
 	setMembers,
 	setTribeClub,
+	setAdorsys,
 	shuffle,
 	toggle,
 	remove,

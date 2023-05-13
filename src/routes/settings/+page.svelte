@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import themeStore, { setTheme } from 'svelte-themes/themeStore'
 	import TiTimes from 'svelte-icons/ti/TiTimes.svelte'
 	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
 	import TiInputChecked from 'svelte-icons/ti/TiInputChecked.svelte'
@@ -46,6 +47,13 @@
 	<a class="icon" href="/"><TiArrowBack /></a>
 	<h1>Settings</h1>
 
+	<h2>Themes</h2>
+	<select bind:value={$themeStore.theme}>
+		{#each $themeStore.themes as theme}
+			<option value={theme}>{theme}</option>
+		{/each}
+	</select>
+
 	<h2>Members</h2>
 	{#each membersSorted as member}
 		<div class="row">
@@ -64,6 +72,7 @@
 			>Copy to clipboard</button
 		>
 	</div>
+
 </section>
 
 <style>
