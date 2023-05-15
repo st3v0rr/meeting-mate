@@ -4,9 +4,8 @@
 	import TiMediaPlayOutline from 'svelte-icons/ti/TiMediaPlay.svelte'
 	import TiRefreshOutline from 'svelte-icons/ti/TiRefresh.svelte'
 
-	let original = 1 * 60 // TYPE NUMBER OF SECONDS HERE
+	let original = 300 // TYPE NUMBER OF SECONDS HERE
 	let timer = tweened(original)
-	console.log(original)
 	let countdownInterval = setInterval(() => {
 		if ($timer > 0) {
 			$timer--
@@ -91,20 +90,19 @@
 <style>
 	.buttongroup {
 		display: flex;
-		flex-direction: row;
-		gap: 0.5rem;
+		flex-direction: column;
+		gap: 0.1rem;
 		align-self: center;
 	}
 
 	.buttongroup > span {
-		height: 30px;
+		height: 38px;
 	}
 
 	.timercontainer {
 		margin-top: 2rem;
 		display: flex;
 		font-weight: bold;
-		justify-content: center;
 		align-items: flex-end;
 		vertical-align: text-bottom;
 		align-content: end;
@@ -115,7 +113,7 @@
 		border: none;
 		text-align: center;
 		font-size: 4rem;
-		max-width: 100px;
+		max-width: 90px;
 	}
 
 	.secs {
@@ -134,24 +132,8 @@
 	}
 
 	progress {
-		border-radius: 7px; 
 		width: 100%;
-		height: 10px;
+		height: 30px;
 		margin-bottom: 2rem;
-		box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
-	}
-
-	progress::-webkit-progress-bar {
-		background-color: #ffffff;
-		border-radius: 7px;
-	}
-
-	progress::-webkit-progress-value {
-		background-color: #c55451;
-		border-radius: 7px;
-		box-shadow: 1px 1px 2px 2px rgba( 197, 84, 81, 0.8 );
-	}
-	progress::-moz-progress-bar {
-		/* style rules */
 	}
 </style>

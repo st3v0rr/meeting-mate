@@ -3,14 +3,11 @@
 </script>
 
 <script lang="ts">
-	import themeStore, { setTheme } from 'svelte-themes/themeStore'
-	import TiTimes from 'svelte-icons/ti/TiTimes.svelte'
+	import themeStore from 'svelte-themes/themeStore'
 	import TiArrowBack from 'svelte-icons/ti/TiArrowBack.svelte'
 	import TiInputChecked from 'svelte-icons/ti/TiInputChecked.svelte'
 	import TiUserAdd from 'svelte-icons/ti/TiUserAdd.svelte'
 	import TiUserDelete from 'svelte-icons/ti/TiUserDelete.svelte'
-	import TiPlus from 'svelte-icons/ti/TiPlus.svelte'
-	import TiDelete from 'svelte-icons/ti/TiDelete.svelte'
 	import TiCancel from 'svelte-icons/ti/TiCancel.svelte'
 	import { members } from '../../stores/members'
 	import { onMount } from 'svelte'

@@ -1,4 +1,4 @@
-import { writable, type Writable, derived } from 'svelte/store'
+import { writable, type Writable } from 'svelte/store'
 
 interface Member {
 	name: string
@@ -10,7 +10,10 @@ const adorsys = [
 	'Thilo',
 	'Andrew',
 	'Kati',
-	'Francis',
+	'André',
+	'Nadja',
+	'Stephan',
+	'Tim',
 ]
 
 const tribeClub = [

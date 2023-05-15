@@ -4,6 +4,7 @@
 	import Countdown from './Countdown.svelte'
 	import MateList from './MemberList.svelte'
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
+	import AdorsysLogo from '$lib/images/Adorsys_Logo.png'
 	import TiCogOutline from 'svelte-icons/ti/TiCog.svelte'
 	import themeStore from 'svelte-themes/themeStore'
 </script>
@@ -18,6 +19,11 @@
 		{#if $themeStore.theme === 'tribeclub'}
 			<div class="logo">
 				<img src={TribeclubLogo} alt="Logo of TribeClub" />
+			</div>
+		{/if}
+		{#if $themeStore.theme === 'adorsys'}
+			<div class="logo">
+				<img src={AdorsysLogo} alt="Logo of Adorsys" />
 			</div>
 		{/if}
 		<Clock />
@@ -38,12 +44,11 @@
 		margin-bottom: 5vh;
 	}
 
-	.logo {
-		width: 15%;
-	}
 	.logo > img {
-		height: 80px;
+		width: 80px;
+		height: auto;
 	}
+
 	.settings {
 		width: 15%;
 		color: black;
