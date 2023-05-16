@@ -5,6 +5,7 @@
 	import MateList from './MemberList.svelte'
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
 	import AdorsysLogo from '$lib/images/Adorsys_Logo.png'
+	import SystemLogo from '$lib/images/System_Logo.svg'
 	import TiCogOutline from 'svelte-icons/ti/TiCog.svelte'
 	import themeStore from 'svelte-themes/themeStore'
 </script>
@@ -26,6 +27,11 @@
 				<img src={AdorsysLogo} alt="Logo of Adorsys" />
 			</div>
 		{/if}
+		{#if $themeStore.theme === 'system'}
+			<div class="logo">
+				<img src={SystemLogo} alt="Default Logo" />
+			</div>
+		{/if}
 		<Clock />
 		<a class="settings" href="/settings"><TiCogOutline /></a>
 	</header>
@@ -45,7 +51,7 @@
 	}
 
 	.logo > img {
-		width: 80px;
+		width: 100px;
 		height: auto;
 	}
 

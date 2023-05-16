@@ -18,15 +18,18 @@
 			}
 		} else if (params.has('tc')) {
 			members.setTribeClub()
-		} else {
+			setTheme('tribeclub')
+		} else if(params.has('ad')) {
 			members.setAdorsys()
+			setTheme('adorsys')
+		} else {
+			setTheme('system')
 		}
-		setTheme(params.has('tc') ? 'tribeclub' : 'adorsys')
 	})
 </script>
 
 <div class="app">
-	<SvelteTheme themes={['adorsys', 'tribeclub']}/>
+	<SvelteTheme themes={['adorsys', 'tribeclub']} defaultTheme={'system'}/>
 	<main>
 		<slot />
 	</main>

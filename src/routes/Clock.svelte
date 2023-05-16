@@ -50,6 +50,7 @@
 	.clock {
 		text-align: center;
 	}
+
 	svg {
 		width: 80%;
 		height: 80%;
@@ -80,9 +81,8 @@
 		stroke-width: 1.5;
 	}
 
-	.second,
-	.second-counterweight {
-		stroke: #c65451;
+	.second, .second-counterweight {
+		stroke: rgba(0, 0, 0, 0.7);
 	}
 
 	.second-counterweight {

@@ -18,19 +18,25 @@
 
 <style>
 	.memberList div:nth-child(odd) {
-		background-color: #dddddd;
+		background-color: #ffffff;
 	}
 
 	.memberList div:nth-child(even) {
+		background-color: #dddddd;
+	}
+
+	[data-theme='adorsys'] .memberList div:nth-child(odd) {
+		background-color: #dddddd;
+	}
+
+	[data-theme='adorsys'] .memberList div:nth-child(even) {
 		background-color: #6d96bc;
 	}
 
-	[data-theme='tribeclub'],
 	[data-theme='tribeclub'] .memberList div:nth-child(odd) {
 		background-color: #f6d6e6;
 	}
 
-	[data-theme='tribeclub'],
 	[data-theme='tribeclub'] .memberList div:nth-child(even) {
 		background-color: #ffe6ef;
 	}
