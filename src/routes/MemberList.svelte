@@ -26,11 +26,11 @@
 	}
 
 	[data-theme='adorsys'] .memberList div:nth-child(odd) {
-		background-color: #dddddd;
+		background-color: #f8f9f9;
 	}
 
 	[data-theme='adorsys'] .memberList div:nth-child(even) {
-		background-color: #6d96bc;
+		background-color: #8498f4;
 	}
 
 	[data-theme='tribeclub'] .memberList div:nth-child(odd) {
@@ -38,7 +38,7 @@
 	}
 
 	[data-theme='tribeclub'] .memberList div:nth-child(even) {
-		background-color: #ffe6ef;
+		background-color: #f8f9f9;
 	}
 
 	.members {

@@ -6,7 +6,7 @@
 	--font-mono: 'Fira Mono', monospace;
 	--color-bg-0: rgb(200, 200, 200);
 	--color-bg-1: rgb(150, 150, 150);
-	--color-bg-2:  rgb(150, 150, 150);
+	--color-bg-2:  rgb(248, 249, 249);
 	--color-text: rgba(0, 0, 0, 0.7);
 	font-family: var(--font-body);
 	color: var(--color-text);
@@ -14,16 +14,16 @@
 
 [data-theme='adorsys'],
 [data-theme='adorsys'] :root {
-	--color-bg-0: rgb(5, 79, 114);
-	--color-bg-1: rgb(9, 132, 191);
-	--color-bg-2: hsl(209,44%,45%);
+	--color-bg-0: rgb(47, 44, 249);
+	--color-bg-1: rgb(132, 152, 244);
+	--color-bg-2: rgb(248, 249, 249);
 }
 
 [data-theme='tribeclub'],
 [data-theme='tribeclub'] :root {
 	--color-bg-0: rgb(236, 216, 225);
 	--color-bg-1: rgb(246, 206, 225);
-	--color-bg-2: hsl(224, 44%, 95%);
+	--color-bg-2: rgb(248, 249, 249);
 }
 
 body {
