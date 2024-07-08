@@ -19,13 +19,13 @@ const adorsys = [
 const tribeClub = [
 	'Andi',
 	'Annina',
-	'Eva',
 	'Flo',
 	'Gunnar',
 	'Jana',
 	'Nadja',
 	'Nicole',
 	'Nina',
+	'Sajjad',
 	'Stefan',
 	'Thomas',
 	'Tobi'
