@@ -6,8 +6,15 @@
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
 	import AdorsysLogo from '$lib/images/Adorsys_Logo.png'
 	import SystemLogo from '$lib/images/System_Logo.svg'
-	import TiCogOutline from 'svelte-icons/ti/TiCog.svelte'
+	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 	import themeStore from 'svelte-themes/themeStore'
+	import Countdown2 from './Countdown2.svelte'
+
+	const logoData = {
+		tribeclub: { src: TribeclubLogo, alt: 'Logo of TribeClub' },
+		adorsys: { src: AdorsysLogo, alt: 'Logo of Adorsys' },
+		default: { src: SystemLogo, alt: 'Default Logo' }
+	}
 </script>
 
 <svelte:head>
@@ -17,25 +24,18 @@
 
 <section>
 	<header class="menu">
-		{#if $themeStore.theme === 'tribeclub'}
-			<div class="logo">
-				<img src={TribeclubLogo} alt="Logo of TribeClub" />
-			</div>
-		{/if}
-		{#if $themeStore.theme === 'adorsys'}
-			<div class="logo">
-				<img src={AdorsysLogo} alt="Logo of Adorsys" />
-			</div>
-		{/if}
-		{#if $themeStore.theme === 'system'}
-			<div class="logo">
-				<img src={SystemLogo} alt="Default Logo" />
-			</div>
-		{/if}
-		<Clock />
-		<a class="settings" href="/settings"><TiCogOutline /></a>
+
+		<div class="logo">
+			{#if $themeStore.theme in logoData}
+				<img src={logoData[$themeStore.theme].src} alt={logoData[$themeStore.theme].alt} />
+			{/if}
+		</div>
+		<a class="settings icon" href="/settings"><MdSettings /></a>
+
 	</header>
+	<Clock />
 	<Countdown />
+	<!-- <Countdown2 /> -->
 	<MateList />
 	<!--Notes /-->
 </section>
@@ -46,8 +46,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		text-align: center;
-		margin-bottom: 5vh;
+		align-items: center;
 	}
 
 	.logo > img {
@@ -56,8 +55,7 @@
 	}
 
 	.settings {
-		width: 15%;
-		color: black;
+		display: block;
 		height: 40px;
 	}
 

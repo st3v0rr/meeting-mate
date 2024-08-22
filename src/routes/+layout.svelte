@@ -19,17 +19,17 @@
 		} else if (params.has('tc')) {
 			members.setTribeClub()
 			setTheme('tribeclub')
-		} else if(params.has('ad')) {
+		} else if (params.has('ad')) {
 			members.setAdorsys()
 			setTheme('adorsys')
 		} else {
-			setTheme('system')
+			setTheme('default')
 		}
 	})
 </script>
 
 <div class="app">
-	<SvelteTheme themes={['adorsys', 'tribeclub']} defaultTheme={'system'}/>
+	<SvelteTheme themes={['adorsys', 'tribeclub', 'default']} defaultTheme={'default'} />
 	<main>
 		<slot />
 	</main>
@@ -48,6 +48,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		max-width: 25rem;
+		width: 25rem;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}

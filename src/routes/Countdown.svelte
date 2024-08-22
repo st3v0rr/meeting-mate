@@ -1,11 +1,14 @@
 <script xmlns="http://www.w3.org/1999/html">
 	import { tweened } from 'svelte/motion'
-	import TiMediaPauseOutline from 'svelte-icons/ti/TiMediaPause.svelte'
-	import TiMediaPlayOutline from 'svelte-icons/ti/TiMediaPlay.svelte'
-	import TiRefreshOutline from 'svelte-icons/ti/TiRefresh.svelte'
+	import PauseIcon from 'svelte-icons/md/MdPause.svelte'
+	import PlayIcon from 'svelte-icons/md/MdPlayArrow.svelte'
+	import ResetIcon from 'svelte-icons/md/MdRefresh.svelte'
 
 	let original = 300 // TYPE NUMBER OF SECONDS HERE
 	let timer = tweened(original)
+
+	const addTime = [5, 10, 15, 20]
+
 	let countdownInterval = setInterval(() => {
 		if ($timer > 0) {
 			$timer--
@@ -45,47 +48,55 @@
 		running = false
 	}
 
+	const setTime = (event) => {
+		original = parseInt(event.target.value) * 60
+		timer = tweened(original)
+		running = false
+	}
+
 	$: minutes = Math.floor($timer / 60)
 	$: seconds = Math.floor($timer - minutes * 60)
 </script>
 
-<main>
-	<div class="container">
-		<div class="timercontainer">
-			<div class="buttongroup">
-				{#if running}
-					<span on:click={startOrPauseTimer}><TiMediaPauseOutline /></span>
-				{:else}
-					<span on:click={startOrPauseTimer}><TiMediaPlayOutline /></span>
-				{/if}
-				<span on:click={stopTimer}><TiRefreshOutline /></span>
-			</div>
-			<div class="timer">
-				<input
-					type="number"
-					class="digits"
-					value={('0' + minutes).slice(-2)}
-					min="0"
-					max="60"
-					on:blur={(event) => setMinutes(event)}
-					on:click={() => clearInterval(countdownInterval)}
-				/>
-				<span class="divider">:</span>
-				<input
-					type="number"
-					class="digits secs"
-					value={('0' + seconds).slice(-2)}
-					on:blur={(event) => setSeconds(event)}
-					min="0"
-					max="60"
-					on:click={() => clearInterval(countdownInterval)}
-				/>
-			</div>
+<div class="container">
+	<div class="timercontainer">
+		<div class="timer">
+			<input
+				type="number"
+				class="digits"
+				value={('0' + minutes).slice(-2)}
+				min="0"
+				max="60"
+				on:blur={(event) => setMinutes(event)}
+				on:click={() => clearInterval(countdownInterval)}
+			/>
+			<span class="divider">:</span>
+			<input
+				type="number"
+				class="digits secs"
+				value={('0' + seconds).slice(-2)}
+				on:blur={(event) => setSeconds(event)}
+				min="0"
+				max="60"
+				on:click={() => clearInterval(countdownInterval)}
+			/>
 		</div>
-		<progress value={$timer / original} class="progress" />
+		<div class="buttongroup">
+			{#if running}
+				<button class="icon" on:click={startOrPauseTimer}><PauseIcon /></button>
+			{:else}
+				<button class="icon" on:click={startOrPauseTimer}><PlayIcon /></button>
+			{/if}
+			<button class="icon" on:click={stopTimer}><ResetIcon /></button>
+		</div>
 	</div>
-	<!-- 	feel free to modify this text!! -->
-</main>
+	<progress value={$timer / original} class="progress" />
+	<div class="add-time">
+		{#each addTime as addTime}
+			<button class="add-time-btn" value={addTime} on:click={setTime}>{addTime}</button>
+		{/each}
+	</div>
+</div>
 
 <style>
 	.buttongroup {
@@ -95,12 +106,20 @@
 		align-self: center;
 	}
 
-	.buttongroup > span {
-		height: 38px;
+	.icon {
+		height: 36px;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+	}
+
+	.icon:active {
+		color: var(--primary);
 	}
 
 	.timercontainer {
-		margin-top: 2rem;
+		margin-top: 1rem;
 		display: flex;
 		font-weight: bold;
 		align-items: flex-end;
@@ -128,12 +147,54 @@
 	.timer {
 		display: flex;
 		align-items: flex-end;
-		width: 60%;
 	}
 
 	progress {
 		width: 100%;
-		height: 30px;
+		height: 16px;
+		border-radius: 5px;
+		margin-bottom: 1rem;
+		background-color: var(--highlight);
+		color: var(--primary);
+	}
+
+	/* background: */
+	progress::-webkit-progress-bar {
+		background-color: var(--highlight);
+	}
+
+	/* value: */
+	progress::-webkit-progress-value {
+		background-color: var(--primary) !important;
+	}
+	progress::-moz-progress-bar {
+		background-color: var(--primary) !important;
+	}
+
+	.add-time {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
 		margin-bottom: 2rem;
+	}
+
+	.add-time-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 38px;
+		background: var(--highlight);
+		border: 1px solid transparent;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-top: 8px;
+	}
+
+	.add-time-btn:hover {
+		border: 1px solid var(--primary);
+	}
+	.add-time-btn:active {
+		background-color: var(--secondary);
 	}
 </style>

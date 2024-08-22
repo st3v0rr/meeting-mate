@@ -20,7 +20,19 @@
 </script>
 
 <div class="clock">
-	<svg viewBox="-50 -50 100 100">
+	<svg viewBox="-60 -60 120 120">
+
+		<!-- shadow behind the clock -->
+		<filter id="shadow" color-interpolation-filters="sRGB">
+			<feDropShadow
+				dx="0"
+				dy="0"
+				stdDeviation="5"
+				flood-opacity=".5"
+				flood-color="var(--primary)"
+			/>
+		</filter>
+
 		<circle class="clock-face" r="48" />
 
 		<!-- markers -->
@@ -33,17 +45,19 @@
 		{/each}
 
 		<!-- hour hand -->
-		<line class="hour" y1="2" y2="-25" transform="rotate({30 * hours + minutes / 2})" />
+		<line class="hour" y1="0" y2="-25" transform="rotate({30 * hours + minutes / 2})" />
 
 		<!-- minute hand -->
-		<line class="minute" y1="4" y2="-36" transform="rotate({6 * minutes + seconds / 10})" />
+		<line class="minute" y1="0" y2="-38" transform="rotate({6 * minutes + seconds / 10})" />
 
 		<!-- second hand -->
-		<g transform="rotate({6 * seconds})">
-			<line class="second" y1="10" y2="-38" />
-			<line class="second-counterweight" y1="10" y2="2" />
-		</g>
+		<line class="second" y1="0" y2="-38" transform="rotate({6 * seconds})" />
+
+		<!-- center circle -->
+		<circle class="clock-center" r="4" />
 	</svg>
+
+	<svg height="0" width="0" />
 </div>
 
 <style>
@@ -57,8 +71,8 @@
 	}
 
 	.clock-face {
-		stroke: #333;
 		fill: white;
+		filter: url(#shadow);
 	}
 
 	.minor {
@@ -81,11 +95,8 @@
 		stroke-width: 1.5;
 	}
 
-	.second, .second-counterweight {
-		stroke: rgba(0, 0, 0, 0.7);
-	}
-
-	.second-counterweight {
-		stroke-width: 3;
+	.second {
+		stroke: var(--primary);
+		stroke-width: 1.5;
 	}
 </style>
