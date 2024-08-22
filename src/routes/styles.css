@@ -4,40 +4,42 @@
 	--font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
-	--color-bg-0: rgb(200, 200, 200);
-	--color-bg-1: rgb(150, 150, 150);
-	--color-bg-2:  rgb(248, 249, 249);
-	--color-text: rgba(0, 0, 0, 0.7);
+	--color-text: rgba(0, 0, 0, 0.8);
+
+	/* Theme: Default */
+	--color-bg-0: #cce3de;
+	--primary: #6b9080;
+	--secondary: #a4c3b2;
+	--highlight: #f6fff8;
+
 	font-family: var(--font-body);
 	color: var(--color-text);
 }
 
-[data-theme='adorsys'],
-[data-theme='adorsys'] :root {
-	--color-bg-0: rgb(47, 44, 249);
-	--color-bg-1: rgb(132, 152, 244);
-	--color-bg-2: rgb(248, 249, 249);
+/* Theme: Adorsys */
+[data-theme='adorsys'] {
+	--color-bg-0: #b4c0f8;
+	--primary: #2f2cf9;
+	--secondary: #8fa1f5;
+	--highlight: #d9e0fc;
 }
 
-[data-theme='tribeclub'],
-[data-theme='tribeclub'] :root {
-	--color-bg-0: rgb(236, 216, 225);
-	--color-bg-1: rgb(246, 206, 225);
-	--color-bg-2: rgb(248, 249, 249);
+/* Theme: TribeClub */
+[data-theme='tribeclub'] {
+	--color-bg-0: #eabebd;
+	--primary: #c65451;
+	--secondary: #f0d0cf;
+	--highlight: #f5e1e0;
 }
 
 body {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
-	background-color: var(--color-bg-1);
+	background-color: var(--color-bg-0);
 	background-size: 100vw 100vh;
-	background-image: radial-gradient(
-			50% 50% at 50% 50%,
-			rgba(255, 255, 255, 0.75) 0%,
-			rgba(255, 255, 255, 0) 100%
-		),
-		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
+	background-image: #000;
+	color: var(--color-text);
 }
 
 h1,
@@ -51,7 +53,7 @@ p {
 }
 
 a {
-	color: var(--color-theme-1);
+	color: var(--color-text);
 	text-decoration: none;
 }
 
@@ -71,7 +73,6 @@ h2 {
 pre {
 	font-size: 16px;
 	font-family: var(--font-mono);
-	background-color: rgba(255, 255, 255, 0.45);
 	border-radius: 3px;
 	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
 	padding: 0.5em;
@@ -114,4 +115,13 @@ button:focus:not(:focus-visible) {
 	position: absolute;
 	width: 1px;
 	white-space: nowrap;
+}
+
+.icon {
+	color: var(--color-text);
+	opacity: 0.85;
+}
+
+.icon:hover {
+	opacity: 1;
 }
