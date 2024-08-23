@@ -37,7 +37,7 @@
 	"type": "module",
 	"license": "MIT",
 	"dependencies": {
-		"@sveltejs/adapter-static": "^2.0.1",
+		"@sveltejs/adapter-static": "^2.0.3",
 		"svelte-icons": "^2.1.0",
 		"svelte-themes": "^1.0.10"
 	}
