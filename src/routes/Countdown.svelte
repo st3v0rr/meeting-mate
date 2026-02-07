@@ -1,4 +1,4 @@
-<script xmlns="http://www.w3.org/1999/html">
+<script lang="ts">
 	import { onDestroy } from 'svelte'
 	import { tweened } from 'svelte/motion'
 	import PauseIcon from 'svelte-icons/md/MdPause.svelte'
