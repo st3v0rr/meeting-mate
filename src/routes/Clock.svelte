@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { onMount, onDestroy } from 'svelte'
 	let time = new Date()
 
 	// these automatically update when `time`
@@ -8,13 +8,30 @@
 	$: minutes = time.getMinutes()
 	$: seconds = time.getSeconds()
 
+	let interval: ReturnType<typeof setInterval> | undefined
+
 	onMount(() => {
-		const interval = setInterval(() => {
+		// Clear any existing interval before creating a new one
+		if (interval) {
+			clearInterval(interval)
+		}
+
+		interval = setInterval(() => {
 			time = new Date()
 		}, 1000)
 
 		return () => {
+			if (interval) {
+				clearInterval(interval)
+				interval = undefined
+			}
+		}
+	})
+
+	onDestroy(() => {
+		if (interval) {
 			clearInterval(interval)
+			interval = undefined
 		}
 	})
 </script>

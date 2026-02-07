@@ -52,6 +52,10 @@
 
 	// Function to start countdown
 	function startCountdown() {
+		// Clear any existing interval before starting a new one
+		if (interval) {
+			clearInterval(interval)
+		}
 		interval = setInterval(() => {
 			if (totalSeconds > 0) {
 				totalSeconds--

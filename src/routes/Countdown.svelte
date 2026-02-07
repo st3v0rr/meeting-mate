@@ -1,4 +1,5 @@
 <script xmlns="http://www.w3.org/1999/html">
+	import { onDestroy } from 'svelte'
 	import { tweened } from 'svelte/motion'
 	import PauseIcon from 'svelte-icons/md/MdPause.svelte'
 	import PlayIcon from 'svelte-icons/md/MdPlayArrow.svelte'
@@ -9,12 +10,19 @@
 
 	const addTime = [5, 10, 15, 20]
 
-	let countdownInterval = setInterval(() => {
+	let countdownInterval: ReturnType<typeof setInterval> | undefined = setInterval(() => {
 		if ($timer > 0) {
 			$timer--
 		}
 	}, 1000)
 	let running = true
+
+	onDestroy(() => {
+		if (countdownInterval) {
+			clearInterval(countdownInterval)
+			countdownInterval = undefined
+		}
+	})
 
 	const startOrPauseTimer = () => {
 		if (running) {
