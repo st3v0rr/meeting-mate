@@ -8,19 +8,20 @@ jobs:
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Dependencies and Build
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-      - run: npm install
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
       - run: npm run build
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}/build
       - name: Deploy files to FTP Server
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20
       - run: node deploy ${{ secrets.FTP_URL }} ${{ secrets.FTP_USER }} ${{ secrets.FTP_PASSWORD }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
