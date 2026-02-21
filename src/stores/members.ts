@@ -8,12 +8,8 @@ interface Member {
 
 const adorsys = [
 	'Thilo',
-	'Andrew',
-	'Kati',
-	'André',
-	'Nadja',
-	'Stephan',
-	'Tim',
+	'Mirko',
+	'Kati'
 ]
 
 const tribeClub = [
