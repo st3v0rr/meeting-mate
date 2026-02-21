@@ -26,7 +26,6 @@
 		"eslint": "^10.0.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.5.0",
-		"ftp-deploy": "^2.4.7",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.5.0",
 		"svelte": "^5.53.1",
@@ -40,6 +39,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.10",
+		"ftp-deploy": "^2.4.7",
 		"svelte-icons": "^2.1.0"
 	}
 }
