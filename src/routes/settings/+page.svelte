@@ -1,9 +1,5 @@
-<script lang="ts" context="module">
-	declare var document: any
-</script>
-
 <script lang="ts">
-	import { themeStore } from '$lib/stores/theme'
+	import { themeStore, type Theme } from '$lib/stores/theme'
 	import MdPlaylistAddCheck from 'svelte-icons/md/MdPlaylistAddCheck.svelte'
 	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
 	import MdRemove from 'svelte-icons/md/MdRemove.svelte'
@@ -21,10 +17,10 @@
 
 	onMount(() => baseUrl.set(`${document.location.protocol}//${document.location.host}`))
 
-	let newMemberName = ''
-	let buttonText: string = 'Copy to Clipboard'
+	let newMemberName = $state('')
+	let buttonText = $state('Copy to Clipboard')
 	let timeoutId: NodeJS.Timeout
-	let disableButton = false
+	let disableButton = $state(false)
 
 	// $: url = `${document.location.host}?members=${$members.map(m => m.name).join(',')}`;
 
@@ -71,13 +67,13 @@
 
 <section>
 	<header>
-		<button class="icon" on:click={goBack}><MdArrowBack /></button>
+		<button class="icon" onclick={goBack}><MdArrowBack /></button>
 		<h1>Settings</h1>
 	</header>
 
 	<div class="select-group">
 		<h2>Themes</h2>
-		<select value={$themeStore} on:change={(e) => themeStore.setTheme(e.target.value)}>
+		<select value={$themeStore} onchange={(e) => themeStore.setTheme((e.target as HTMLSelectElement).value as Theme)}>
 			{#each themeStore.themes as t}
 				<option value={t}>{t}</option>
 			{/each}
@@ -89,19 +85,19 @@
 		<div class="members-list">
 			{#each membersSorted as member}
 				<div class="row member">
-					<button class="icon" on:click={() => members.toggle(member.name)}
+					<button class="icon" onclick={() => members.toggle(member.name)}
 						>{#if member.present}<MdPlaylistAddCheck />{:else}<MdCancel />{/if}</button
 					>
 					<span>{member.name}</span>
-					<button class="icon" on:click={() => members.remove(member.name)}><MdRemove /></button>
+					<button class="icon" onclick={() => members.remove(member.name)}><MdRemove /></button>
 				</div>
 			{/each}
 		</div>
 	</div>
 	<div class="add-user">
 		<div class="add-user-group">
-			<input bind:value={newMemberName} placeholder="add new member" id="add-user" on:keydown={handleKeyDown} />
-			<button class="icon" on:click={addNewMember}><MdAdd /></button>
+			<input bind:value={newMemberName} placeholder="add new member" id="add-user" onkeydown={handleKeyDown} />
+			<button class="icon" onclick={addNewMember}><MdAdd /></button>
 		</div>
 	</div>
 
@@ -111,7 +107,7 @@
 		<button
 			class="url-copy-btn"
 			disabled={!membersParam || disableButton}
-			on:click={copyUrlToClipboard}>{buttonText}</button
+			onclick={copyUrlToClipboard}>{buttonText}</button
 		>
 	</div>
 </section>

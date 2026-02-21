@@ -1,38 +1,88 @@
-# create-svelte
+# Meeting Mate 🤝
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A SvelteKit application for managing meeting participants with countdown timer and theme support.
 
-## Creating a project
+## Features ✨
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Participant Management** - Add, remove, and shuffle meeting participants
+- **Countdown Timer** - Customizable timer with pause/reset functionality
+- **Theme System** - Multiple themes (Default, Adorsys, TribeClub)
+- **URL Parameters** - Share meetings with custom participant lists
+- **Responsive Design** - Works on desktop and mobile
+
+## Tech Stack 🛠️
+
+- **Framework:** SvelteKit 2.x
+- **Runtime:** Svelte 5 with Runes
+- **Build Tool:** Vite 7
+- **Language:** TypeScript 5
+- **Styling:** CSS Variables
+- **Deployment:** Static site generation
+
+## Getting Started 🚀
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+# Install dependencies
+npm install
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+# Start development server
 npm run dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Building
+## Usage 📖
 
-To create a production version of your app:
+### Basic Usage
+1. Open the app
+2. Add participants in Settings
+3. Start the countdown timer
+4. Shuffle participants if needed
+
+### URL Parameters
+- `?tc` - Use TribeClub theme
+- `?ad` - Use Adorsys theme  
+- `?members=John,Jane,Bob` - Pre-populate participant list
+
+### Example
+```
+https://your-domain.com/?tc&members=Alice,Bob,Charlie
+```
+
+## Themes 🎨
+
+The app supports multiple themes using CSS variables:
+
+- **Default** - Green tones
+- **Adorsys** - Blue tones
+- **TribeClub** - Red tones
+
+Themes persist in localStorage and can be changed in Settings.
+
+## Development 👨‍💻
 
 ```bash
-npm run build
+# Type checking
+npm run check
+
+# Run tests
+npm run test
+
+# Linting
+npm run lint
+
+# Format code
+npm run format
 ```
 
-You can preview the production build with `npm run preview`.
+## License 📄
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+MIT
+
+---
+
+Built with ❤️ using SvelteKit
