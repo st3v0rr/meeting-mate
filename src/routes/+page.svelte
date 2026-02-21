@@ -7,7 +7,7 @@
 	import AdorsysLogo from '$lib/images/Adorsys_Logo.png'
 	import SystemLogo from '$lib/images/System_Logo.svg'
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
-	import themeStore from 'svelte-themes/themeStore'
+	import { themeStore } from '$lib/stores/theme'
 	import Countdown2 from './Countdown2.svelte'
 
 	const logoData = {
@@ -26,8 +26,8 @@
 	<header class="menu">
 
 		<div class="logo">
-			{#if $themeStore.theme in logoData}
-				<img src={logoData[$themeStore.theme].src} alt={logoData[$themeStore.theme].alt} />
+			{#if $themeStore in logoData}
+				<img src={logoData[$themeStore].src} alt={logoData[$themeStore].alt} />
 			{/if}
 		</div>
 		<a class="settings icon" href="/settings"><MdSettings /></a>

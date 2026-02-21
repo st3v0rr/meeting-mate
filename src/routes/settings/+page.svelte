@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import themeStore from 'svelte-themes/themeStore'
+	import { themeStore } from '$lib/stores/theme'
 	import MdPlaylistAddCheck from 'svelte-icons/md/MdPlaylistAddCheck.svelte'
 	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
 	import MdRemove from 'svelte-icons/md/MdRemove.svelte'
@@ -14,11 +14,10 @@
 	import { writable } from 'svelte/store'
 
 	const baseUrl = writable('')
-	const filteredThemes = $themeStore.themes.filter(theme => theme !== 'system');
-
-	$: membersSorted = $members.sort((a, b) => (a.name < b.name ? -1 : 1))
-	$: membersParam = `members=${$members.map((x) => x.name).join(',')}`
-	$: url = `${$baseUrl}?${membersParam}`
+	
+	let membersSorted = $derived($members.sort((a, b) => (a.name < b.name ? -1 : 1)))
+	let membersParam = $derived(`members=${$members.map((x) => x.name).join(',')}`)
+	let url = $derived(`${$baseUrl}?${membersParam}`)
 
 	onMount(() => baseUrl.set(`${document.location.protocol}//${document.location.host}`))
 
@@ -78,9 +77,9 @@
 
 	<div class="select-group">
 		<h2>Themes</h2>
-		<select bind:value={$themeStore.theme}>
-			{#each filteredThemes as theme}
-				<option value={theme}>{theme}</option>
+		<select value={$themeStore} on:change={(e) => themeStore.setTheme(e.target.value)}>
+			{#each themeStore.themes as t}
+				<option value={t}>{t}</option>
 			{/each}
 		</select>
 	</div>

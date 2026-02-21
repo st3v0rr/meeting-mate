@@ -4,8 +4,8 @@
 </script>
 
 <script lang="ts">
-	import SvelteTheme from 'svelte-themes/SvelteTheme.svelte'
-	import { setTheme } from 'svelte-themes/themeStore'
+	import './styles.css'
+	import { themeStore } from '$lib/stores/theme'
 	import { onMount } from 'svelte'
 	import { members } from '../stores/members'
 
@@ -18,18 +18,15 @@
 			}
 		} else if (params.has('tc')) {
 			members.setTribeClub()
-			setTheme('tribeclub')
+			themeStore.setTheme('tribeclub')
 		} else if (params.has('ad')) {
 			members.setAdorsys()
-			setTheme('adorsys')
-		} else {
-			setTheme('default')
+			themeStore.setTheme('adorsys')
 		}
 	})
 </script>
 
 <div class="app">
-	<SvelteTheme themes={['adorsys', 'tribeclub', 'default']} defaultTheme={'default'} />
 	<main>
 		<slot />
 	</main>
