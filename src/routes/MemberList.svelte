@@ -5,7 +5,7 @@
 	$: membersPresentAndRanked = $members.filter((a) => a.present).sort((a, b) => a.rank - b.rank)
 </script>
 
-<span class="icon" on:click={members.shuffle}><MdShuffle /></span>
+<button type="button" class="icon" on:click={members.shuffle} aria-label="Shuffle members"><MdShuffle /></button>
 <div class="members">
 	<div class="memberList">
 		{#each membersPresentAndRanked as member, i}
@@ -47,6 +47,11 @@
 	.icon {
 		width: 28px;
 		cursor: pointer;
+		background: none;
+		border: none;
+		padding: 0;
+		color: inherit;
+		font-size: inherit;
 	}
 
 

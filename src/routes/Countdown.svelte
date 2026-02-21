@@ -1,4 +1,4 @@
-<script xmlns="http://www.w3.org/1999/html">
+<script lang="ts">
 	import { tweened } from 'svelte/motion'
 	import PauseIcon from 'svelte-icons/md/MdPause.svelte'
 	import PlayIcon from 'svelte-icons/md/MdPlayArrow.svelte'
@@ -36,20 +36,23 @@
 		running = false
 	}
 
-	const setMinutes = (event) => {
-		original = parseInt(event.target.value) * 60 + seconds
+	const setMinutes = (event: Event) => {
+		const target = event.target as HTMLInputElement
+		original = parseInt(target.value) * 60 + seconds
 		timer = tweened(original)
 		running = false
 	}
 
-	const setSeconds = (event) => {
-		original = minutes * 60 + parseInt(event.target.value)
+	const setSeconds = (event: Event) => {
+		const target = event.target as HTMLInputElement
+		original = minutes * 60 + parseInt(target.value)
 		timer = tweened(original)
 		running = false
 	}
 
-	const setTime = (event) => {
-		original = parseInt(event.target.value) * 60
+	const setTime = (event: MouseEvent) => {
+		const target = event.currentTarget as HTMLButtonElement
+		original = parseInt(target.value) * 60
 		timer = tweened(original)
 		running = false
 	}
@@ -90,7 +93,7 @@
 			<button class="icon" on:click={stopTimer}><ResetIcon /></button>
 		</div>
 	</div>
-	<progress value={$timer / original} class="progress" />
+	<progress value={$timer / original} class="progress"></progress>
 	<div class="add-time">
 		{#each addTime as addTime}
 			<button class="add-time-btn" value={addTime} on:click={setTime}>{addTime}</button>

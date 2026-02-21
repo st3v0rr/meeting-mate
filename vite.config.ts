@@ -1,6 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
-import * as path from 'path';
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
 	plugins: [sveltekit()],
@@ -9,10 +9,10 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: [
-				{ find: '$stores', replacement: path.resolve(__dirname, 'src/stores') },
+			{ find: '$stores', replacement: fileURLToPath(new URL('./src/stores', import.meta.url)) },
 		],
 	},
 	optimizeDeps: {
-    exclude: ['svelte-themes']
-  }
+		exclude: ['svelte-themes']
+	}
 })

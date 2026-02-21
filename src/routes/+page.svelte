@@ -1,6 +1,5 @@
 <script>
 	import Clock from './Clock.svelte'
-	import Notes from './Notes.svelte'
 	import Countdown from './Countdown.svelte'
 	import MateList from './MemberList.svelte'
 	import TribeclubLogo from '$lib/images/Tribeclub_Logo.png'
@@ -8,7 +7,6 @@
 	import SystemLogo from '$lib/images/System_Logo.svg'
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
 	import { themeStore } from '$lib/stores/theme'
-	import Countdown2 from './Countdown2.svelte'
 
 	const logoData = {
 		tribeclub: { src: TribeclubLogo, alt: 'Logo of TribeClub' },
@@ -35,9 +33,7 @@
 	</header>
 	<Clock />
 	<Countdown />
-	<!-- <Countdown2 /> -->
 	<MateList />
-	<!--Notes /-->
 </section>
 
 <style>
