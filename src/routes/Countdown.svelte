@@ -9,51 +9,69 @@
 
 	const addTime = [5, 10, 15, 20]
 
-	let countdownInterval = setInterval(() => {
-		if ($timer > 0) {
-			$timer--
+	let countdownInterval: ReturnType<typeof setInterval> | null = null
+	let running = false
+
+	const clearExistingInterval = () => {
+		if (countdownInterval) {
+			clearInterval(countdownInterval)
+			countdownInterval = null
 		}
-	}, 1000)
-	let running = true
+	}
+
+	const startTimer = () => {
+		clearExistingInterval()
+		countdownInterval = setInterval(() => {
+			if ($timer > 0) {
+				$timer--
+			} else {
+				clearExistingInterval()
+				running = false
+			}
+		}, 1000)
+		running = true
+	}
+
+	const pauseTimer = () => {
+		clearExistingInterval()
+		running = false
+	}
 
 	const startOrPauseTimer = () => {
 		if (running) {
-			clearInterval(countdownInterval)
-			running = false
+			pauseTimer()
 		} else {
-			countdownInterval = setInterval(() => {
-				if ($timer > 0) {
-					$timer--
-				}
-			}, 1000)
-			running = true
+			startTimer()
 		}
 	}
 
 	const stopTimer = () => {
+		clearExistingInterval()
 		$timer = original
-		clearInterval(countdownInterval)
 		running = false
 	}
 
 	const setMinutes = (event: Event) => {
 		const target = event.target as HTMLInputElement
+		clearExistingInterval()
 		original = parseInt(target.value) * 60 + seconds
-		timer = tweened(original)
+		$timer = original
 		running = false
 	}
 
 	const setSeconds = (event: Event) => {
 		const target = event.target as HTMLInputElement
+		clearExistingInterval()
 		original = minutes * 60 + parseInt(target.value)
-		timer = tweened(original)
+		$timer = original
 		running = false
 	}
 
 	const setTime = (event: MouseEvent) => {
 		const target = event.currentTarget as HTMLButtonElement
+		clearExistingInterval()
 		original = parseInt(target.value) * 60
-		timer = tweened(original)
+		$timer = original
 		running = false
 	}
 
@@ -71,7 +89,6 @@
 				min="0"
 				max="60"
 				on:blur={(event) => setMinutes(event)}
-				on:click={() => clearInterval(countdownInterval)}
 			/>
 			<span class="divider">:</span>
 			<input
@@ -81,7 +98,6 @@
 				on:blur={(event) => setSeconds(event)}
 				min="0"
 				max="60"
-				on:click={() => clearInterval(countdownInterval)}
 			/>
 		</div>
 		<div class="buttongroup">
