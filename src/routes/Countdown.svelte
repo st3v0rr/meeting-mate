@@ -87,7 +87,7 @@
 				class="digits"
 				value={('0' + minutes).slice(-2)}
 				min="0"
-				max="60"
+				max="59"
 				on:blur={(event) => setMinutes(event)}
 			/>
 			<span class="divider">:</span>
@@ -97,7 +97,7 @@
 				value={('0' + seconds).slice(-2)}
 				on:blur={(event) => setSeconds(event)}
 				min="0"
-				max="60"
+				max="59"
 			/>
 		</div>
 		<div class="buttongroup">
@@ -151,7 +151,14 @@
 		border: none;
 		text-align: center;
 		font-size: 4rem;
-		max-width: 90px;
+		width: 90px;
+		-moz-appearance: textfield;
+	}
+
+	.digits::-webkit-inner-spin-button,
+	.digits::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
 	}
 
 	.secs {
