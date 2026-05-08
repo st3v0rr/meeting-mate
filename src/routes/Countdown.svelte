@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { tweened } from 'svelte/motion'
+	import { Tween } from 'svelte/motion'
 	import PauseIcon from 'svelte-icons/md/MdPause.svelte'
 	import PlayIcon from 'svelte-icons/md/MdPlayArrow.svelte'
 	import ResetIcon from 'svelte-icons/md/MdRefresh.svelte'
 
 	let original = 300 // TYPE NUMBER OF SECONDS HERE
-	let timer = tweened(original)
+	let counter = original // integer seconds — source of truth for display and logic
+	let timer = new Tween(original) // animated float — drives the progress bar only
 
 	const addTime = [5, 10, 15, 20]
 
@@ -22,8 +23,9 @@
 	const startTimer = () => {
 		clearExistingInterval()
 		countdownInterval = setInterval(() => {
-			if ($timer > 0) {
-				$timer--
+			if (counter > 0) {
+				counter--
+				timer.set(counter, counter === 0 ? { duration: 0 } : undefined)
 			} else {
 				clearExistingInterval()
 				running = false
@@ -47,36 +49,40 @@
 
 	const stopTimer = () => {
 		clearExistingInterval()
-		$timer = original
+		counter = original
+		timer.set(original)
 		running = false
 	}
 
 	const setMinutes = (event: Event) => {
 		const target = event.target as HTMLInputElement
 		clearExistingInterval()
-		original = parseInt(target.value) * 60 + seconds
-		$timer = original
+		counter = parseInt(target.value) * 60 + seconds
+		original = counter
+		timer.set(counter)
 		running = false
 	}
 
 	const setSeconds = (event: Event) => {
 		const target = event.target as HTMLInputElement
 		clearExistingInterval()
-		original = minutes * 60 + parseInt(target.value)
-		$timer = original
+		counter = minutes * 60 + parseInt(target.value)
+		original = counter
+		timer.set(counter)
 		running = false
 	}
 
 	const setTime = (event: MouseEvent) => {
 		const target = event.currentTarget as HTMLButtonElement
 		clearExistingInterval()
-		original = parseInt(target.value) * 60
-		$timer = original
+		counter = parseInt(target.value) * 60
+		original = counter
+		timer.set(counter)
 		running = false
 	}
 
-	$: minutes = Math.floor($timer / 60)
-	$: seconds = Math.floor($timer - minutes * 60)
+	$: minutes = Math.floor(counter / 60)
+	$: seconds = counter - minutes * 60
 </script>
 
 <div class="container">
@@ -109,7 +115,7 @@
 			<button class="icon" on:click={stopTimer}><ResetIcon /></button>
 		</div>
 	</div>
-	<progress value={$timer / original} class="progress"></progress>
+	<progress value={timer.current / original} class="progress"></progress>
 	<div class="add-time">
 		{#each addTime as addTime}
 			<button class="add-time-btn" value={addTime} on:click={setTime}>{addTime}</button>
