@@ -22,7 +22,6 @@ const tribeClub = [
 	'Nicole',
 	'Nina',
 	'Sajjad',
-	'Stefan',
 	'Thomas',
 	'Tobi'
 ]
