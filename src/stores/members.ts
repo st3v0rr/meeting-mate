@@ -18,6 +18,7 @@ const tribeClub = [
 	'Flo',
 	'Gunnar',
 	'Jana',
+	'Mario',
 	'Nadja',
 	'Nicole',
 	'Nina',
