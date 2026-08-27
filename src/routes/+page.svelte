@@ -6,6 +6,7 @@
 	import AdorsysLogo from '$lib/images/Adorsys_Logo.png'
 	import SystemLogo from '$lib/images/System_Logo.svg'
 	import MdSettings from 'svelte-icons/md/MdSettings.svelte'
+	import MdCasino from 'svelte-icons/md/MdCasino.svelte'
 	import { themeStore } from '$lib/stores/theme'
 
 	const logoData = {
@@ -28,7 +29,10 @@
 				<img src={logoData[$themeStore].src} alt={logoData[$themeStore].alt} />
 			{/if}
 		</div>
-		<a class="settings icon" href="/settings"><MdSettings /></a>
+		<div class="actions">
+			<a class="settings icon" href="/gluecksrad" title="Glücksrad"><MdCasino /></a>
+			<a class="settings icon" href="/settings"><MdSettings /></a>
+		</div>
 
 	</header>
 	<Clock />
@@ -53,6 +57,13 @@
 	.settings {
 		display: block;
 		height: 40px;
+	}
+
+	.actions {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	section {
