@@ -887,11 +887,15 @@ export function initGluecksrad() {
 	
 	  /* ---------- Ton ---------- */
 	  var actx = null;
-	  var cheerTrack = new Audio('/sounds/2026-08-21_short-crowd-cheer.mp3');
+	  var cheerTracks = [
+	    new Audio('/sounds/dragon-studio-cheering-crowd-406645.mp3'),
+	    new Audio('/sounds/freesound_community-applause-2-31567.mp3'),
+	    new Audio('/sounds/storegraphic-crowd-cheers-314919.mp3')
+	  ];
 	  var witchTrack = new Audio('/sounds/2026-08-21_witch.mp3');
-	  var celebrationTracks = [cheerTrack, witchTrack];
+	  var celebrationTracks = cheerTracks.concat([witchTrack]);
 	  celebrationTracks.forEach(function(track){ track.preload = 'auto'; });
-	  cheerTrack.volume = .72; witchTrack.volume = .72;
+	  celebrationTracks.forEach(function(track){ track.volume = .72; });
 	
 	  function primeTrack(track, normalVolume){
 	    if (track._primed) return;
@@ -909,8 +913,7 @@ export function initGluecksrad() {
 	  // Während des Klicks einmal stumm anspielen, damit spätere Wiedergabe erlaubt ist
 	  function primeCheer(){
 	    if (!state.sound) return;
-	    primeTrack(cheerTrack,.72);
-	    primeTrack(witchTrack,.72);
+	    celebrationTracks.forEach(function(track){ primeTrack(track,.72); });
 	  }
 	
 	  function stopCelebrationTracks(){
@@ -929,6 +932,7 @@ export function initGluecksrad() {
 	  }
 	
 	  function playCheer(){
+	    var cheerTrack = cheerTracks[Math.floor(Math.random() * cheerTracks.length)];
 	    playMediaTrack(cheerTrack,.72,applause);
 	  }
 	
@@ -1070,14 +1074,6 @@ export function initGluecksrad() {
 	    }
 	  }
 	
-	  function fanfare(){
-	    var a = audio(); if (!a) return;
-	    [0, 110, 220, 400].forEach(function(ms, i){
-	      setTimeout(function(){ blip([523, 659, 784, 1046][i], 0.32, 0.09, 'triangle'); }, ms);
-	    });
-	    setTimeout(playWinnerSound, 760);
-	  }
-	
 	  /* ---------- Dreh-Logik ---------- */
 	  var phi = 0;                 // aktueller Winkel des Rads
 	  var spin = null;             // laufende Drehung
@@ -1144,7 +1140,7 @@ export function initGluecksrad() {
 	    overlay.classList.add('show');
 	    liveEl.textContent = 'Gewinner: ' + person.name;
 	    $('againBtn').focus();
-	    fanfare();
+	    playWinnerSound();
 	    if (!reduced) confetti();
 	    if (state.removeWinner) takeOut(person.id);
 	  }
