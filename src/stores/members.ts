@@ -20,7 +20,7 @@ const tribeClub = [
 	'Jana',
 	'Mario',
 	'Nadja',
-	'Nicole',
+	'Jakob',
 	'Nina',
 	'Sajjad',
 	'Thomas',

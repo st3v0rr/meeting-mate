@@ -228,6 +228,7 @@ export function initGluecksrad() {
 	    var skin = pick(SKIN), hair = pick(HAIR), shirt = pick(SHIRT), tile = pick(TILE);
 	    look = look || {};
 	    if (look.hair) hair = HAIRC[look.hair] || look.hair;
+	    if (look.shirt) shirt = look.shirt;
 	    if (typeof look.skin === 'number') skin = SKIN[look.skin % SKIN.length];
 	
 	    var g = [], y, x;
@@ -421,7 +422,8 @@ export function initGluecksrad() {
 	      { id:'p8',  name:'Mario',  on:true, look:{ hair:'schwarz',     style:'kurz'    , beard:false } },
 	      { id:'p9',  name:'Nina',   on:true, look:{ hair:'blond',       style:'mittel'  , beard:false } },
 	      { id:'p10', name:'Gunnar', on:true, look:{ hair:'dunkelblond', style:'stoppel' , beard:false } },
-	      { id:'p11', name:'Thomas', on:true, look:{ hair:'rot',         style:'kurz',    glasses:true , beard:false } }
+	      { id:'p11', name:'Thomas', on:true, look:{ hair:'rot',         style:'kurz',    glasses:true , beard:false } },
+	      { id:'p12', name:'Jakob',  on:true, look:{ hair:'braun',       style:'glatze',   shirt:'#4A90B8', beard:true } }
 	    ],
 	    removeWinner:false,
 	    sound:true
