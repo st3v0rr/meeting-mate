@@ -35,6 +35,12 @@ npm run build
 npm run preview
 ```
 
+## Deployment 🚀
+
+Every new commit on `main` automatically triggers the deployment pipeline. Once the pipeline completes successfully, production is updated to reflect the new state of `main`.
+
+To deploy a change, merge or push it to `main`. No manual deployment step is required.
+
 ## Usage 📖
 
 ### Basic Usage
