@@ -315,10 +315,27 @@ export function initGluecksrad() {
 	    return { g:g, tile:tile };
 	  }
 	
+	  // Keep familiar appearances independent of where participants were added.
+	  var defaultLooks = {
+	    annina: { hair:'blond', style:'lang', beard:false },
+	    andi: { hair:'schwarz', style:'kurz', beard:true },
+	    nadja: { hair:'dunkelblond', style:'mittel', beard:false },
+	    jana: { hair:'schwarz', style:'lang', skin:1, beard:false },
+	    sajjad: { hair:'schwarz', style:'kurz', skin:2, beard:false },
+	    tobi: { hair:'blond', style:'kurz', beard:false },
+	    flo: { style:'muetze', beard:false },
+	    mario: { hair:'schwarz', style:'kurz', beard:false },
+	    nina: { hair:'blond', style:'mittel', beard:false },
+	    gunnar: { hair:'dunkelblond', style:'stoppel', beard:false },
+	    thomas: { hair:'rot', style:'kurz', glasses:true, beard:false },
+	    jakob: { hair:'braun', style:'glatze', shirt:'#4A90B8', beard:true }
+	  };
 	  var avCache = {};
 	  function avatarOf(p){
-	    var key = p.name + '|' + (p.av || 0) + '|' + (p.look ? JSON.stringify(p.look) : '');
-	    if (!avCache[key]) avCache[key] = buildAvatar(p.name, p.av || 0, p.look);
+	    var nameKey = String(p.name || '').trim().toLowerCase();
+	    var look = p.look || (Object.hasOwn(defaultLooks, nameKey) ? defaultLooks[nameKey] : undefined);
+	    var key = p.name + '|' + (p.av || 0) + '|' + (look ? JSON.stringify(look) : '');
+	    if (!avCache[key]) avCache[key] = buildAvatar(p.name, p.av || 0, look);
 	    return avCache[key];
 	  }
 	
