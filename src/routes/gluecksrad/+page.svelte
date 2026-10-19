@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { initGluecksrad } from './gluecksrad.js'
+	import { themeStore } from '$lib/stores/theme'
+	import { wheelThemes } from './themes'
+	import './themes.css'
+
+	const wheelTheme = $derived(wheelThemes[$themeStore])
 
 	const THREE_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 
@@ -31,7 +36,7 @@
 </script>
 
 <svelte:head>
-	<title>TribeCLUB Glücksrad</title>
+	<title>{wheelTheme.label === 'Glücksrad' ? 'Glücksrad' : `${wheelTheme.label} Glücksrad`}</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link
@@ -40,14 +45,14 @@
 	/>
 </svelte:head>
 
-<div class="gluecksrad">
+<div class="gluecksrad" data-wheel-theme={$themeStore}>
 	<canvas class="foam-bg" id="foamBg" aria-hidden="true"></canvas>
 
 	<div class="gr-app">
 		<header class="masthead">
 			<div>
 				<div class="eyebrow">Los geht’s</div>
-				<h1>TribeCLUB</h1>
+				<h1>{wheelTheme.label}</h1>
 			</div>
 			<p class="tagline">
 				Namen eintragen, abschütteln, fertig. Wer rausfällt, zeigt, was als Nächstes ansteht.

@@ -6,12 +6,17 @@
 
 import { get } from 'svelte/store';
 import { members } from '../../stores/members';
+import { themeStore } from '$lib/stores/theme';
+import { wheelThemes } from './themes';
 
 export function initGluecksrad() {
 	(function(){
 	  "use strict";
 	
 	  var TAU = Math.PI * 2;
+	  var themeName = get(themeStore);
+	  var theme = wheelThemes[themeName];
+	  var tribeclub = themeName === 'tribeclub';
 	  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	
 	  /* ---------- Farben der Segmente (Industrial Club: Rostrot und Schwarz) ---------- */
@@ -25,6 +30,7 @@ export function initGluecksrad() {
 	    { bg:'#873047', fg:'#FFF0F5' },
 	    { bg:'#2A1B21', fg:'#F1BBCF' }
 	  ];
+	  if (!tribeclub) PAL = theme.segments.map(function(bg){ return { bg:bg, fg:'#ffffff' }; });
 	  function palFor(i, n){
 	    var k = i % PAL.length;
 	    if (n > 1 && i === n - 1 && k === 0) k = 1 % PAL.length;
@@ -37,7 +43,8 @@ export function initGluecksrad() {
 	  var HAIR  = ['#241812','#5A3A22','#8E5A2B','#C98A3A','#E8CB77','#A33A28','#33333D','#7A7A88','#DAD5CB','#2E5E8C','#9B3AA8','#1F6E5A'];
 	  var SHIRT = ['#EE99AE','#F5CDE1','#C55451','#A35150','#D8757B','#B96072','#FFF2F7','#783340'];
 	  var TILE  = ['#35141D','#57212B','#783340','#642A3A','#4A1D29'];
-	  var DARK = '#35141D';
+	  var DARK = theme.ink;
+	  if (!tribeclub) { SHIRT = theme.segments; TILE = [theme.surface]; }
 	
 	  function hashStr(str){
 	    var h = 2166136261;
@@ -123,7 +130,7 @@ export function initGluecksrad() {
 	  }
 	
 	  function drawFoam(){
-	    if (!foamCtx) return;
+	    if (!foamCtx || !tribeclub) return;
 	    if (foamAnim) cancelAnimationFrame(foamAnim);
 	    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 	    foamDpr = dpr;
@@ -336,6 +343,10 @@ export function initGluecksrad() {
 	
 	  // Pixelporträt auf einem zerkratzten, genieteten Blechschild
 	  function paintMetalPortrait(ctx, person, x, y, size){
+	    if (!tribeclub) {
+	      paintAvatar(ctx, avatarOf(person), x - size / 2, y - size / 2, size, true);
+	      return;
+	    }
 	    var pr = rngFrom(hashStr(person.name + '|blech'));
 	    var plate = size * 1.22;
 	    var inset = size * .91;
@@ -485,7 +496,7 @@ export function initGluecksrad() {
 	
 	    if (n === 0){
 	      tctx.beginPath(); tctx.arc(c, c, R, 0, TAU);
-	      tctx.fillStyle = '#783340'; tctx.fill();
+	      tctx.fillStyle = tribeclub ? '#783340' : theme.accent; tctx.fill();
 	      tctx.setLineDash([26, 22]); tctx.lineWidth = 6;
 	      tctx.strokeStyle = 'rgba(255,242,247,.30)';
 	      tctx.beginPath(); tctx.arc(c, c, R * 0.72, 0, TAU); tctx.stroke();
@@ -495,7 +506,7 @@ export function initGluecksrad() {
 	      tctx.font = '600 96px ' + "'Inter Tight', system-ui, sans-serif";
 	      tctx.fillText('Noch keine Namen', c, c - 40);
 	      tctx.font = '400 70px ' + "'Inter Tight', system-ui, sans-serif";
-	      tctx.fillStyle = 'rgba(217,168,182,.86)';
+	      tctx.fillStyle = tribeclub ? 'rgba(217,168,182,.86)' : theme.surface;
 	      tctx.fillText('Trag ein, wer mitspielt', c, c + 60);
 	      if (texture) texture.needsUpdate = true;
 	      return;
@@ -517,44 +528,46 @@ export function initGluecksrad() {
 	      tctx.fillStyle = col.bg;
 	      tctx.fill();
 	
-	      // Deterministische Kratzer und Pigmentflecken für die raue Emaille-Optik
-	      tctx.save();
-	      tctx.clip();
-	      var grit = rngFrom(Math.imul(i + 17, 2654435761) ^ Math.imul(n + 3, 1597334677));
-	      for (var g = 0; g < 260; g++){
-	        var gx = grit() * S, gy = grit() * S;
-	        var gs = 1 + grit() * 10;
-	        var ga = 0.018 + grit() * 0.07;
-	        tctx.fillStyle = grit() > 0.52 ? 'rgba(255,224,235,' + ga + ')' : 'rgba(0,0,0,' + (ga * 1.6) + ')';
-	        tctx.fillRect(gx, gy, gs * (1 + grit() * 3), Math.max(1, gs * 0.22));
-	      }
-	      for (var st = 0; st < 44; st++){
-	        var stx = grit() * S, sty = grit() * S;
-	        var str = 5 + Math.pow(grit(), 2) * 66;
-	        var stain = tctx.createRadialGradient(stx, sty, 0, stx, sty, str);
-	        if (grit() > .42){
-	          stain.addColorStop(0, 'rgba(0,0,0,.15)'); stain.addColorStop(.55, 'rgba(0,0,0,.07)');
-	        } else {
-	          stain.addColorStop(0, 'rgba(255,209,222,.10)'); stain.addColorStop(.55, 'rgba(255,209,222,.035)');
+	      if (tribeclub) {
+	        // Deterministische Kratzer und Pigmentflecken für die raue Emaille-Optik
+	        tctx.save();
+	        tctx.clip();
+	        var grit = rngFrom(Math.imul(i + 17, 2654435761) ^ Math.imul(n + 3, 1597334677));
+	        for (var g = 0; g < 260; g++){
+	          var gx = grit() * S, gy = grit() * S;
+	          var gs = 1 + grit() * 10;
+	          var ga = 0.018 + grit() * 0.07;
+	          tctx.fillStyle = grit() > 0.52 ? 'rgba(255,224,235,' + ga + ')' : 'rgba(0,0,0,' + (ga * 1.6) + ')';
+	          tctx.fillRect(gx, gy, gs * (1 + grit() * 3), Math.max(1, gs * 0.22));
 	        }
-	        stain.addColorStop(1, 'rgba(0,0,0,0)');
-	        tctx.fillStyle = stain; tctx.beginPath();
-	        tctx.ellipse(stx, sty, str, str * (.25 + grit() * .65), grit() * TAU, 0, TAU); tctx.fill();
-	      }
-	      tctx.globalAlpha = .12;
-	      tctx.strokeStyle = '#F6C5D7';
-	      tctx.lineWidth = 2;
-	      for (var sc = 0; sc < 13; sc++){
-	        var sx = grit() * S, sy = grit() * S;
-	        tctx.beginPath();
-	        tctx.moveTo(sx, sy);
-	        tctx.lineTo(sx + 30 + grit() * 150, sy + (grit() - .5) * 24);
-	        tctx.stroke();
-	      }
-	      tctx.restore();
+	        for (var st = 0; st < 44; st++){
+	          var stx = grit() * S, sty = grit() * S;
+	          var str = 5 + Math.pow(grit(), 2) * 66;
+	          var stain = tctx.createRadialGradient(stx, sty, 0, stx, sty, str);
+	          if (grit() > .42){
+	            stain.addColorStop(0, 'rgba(0,0,0,.15)'); stain.addColorStop(.55, 'rgba(0,0,0,.07)');
+	          } else {
+	            stain.addColorStop(0, 'rgba(255,209,222,.10)'); stain.addColorStop(.55, 'rgba(255,209,222,.035)');
+	          }
+	          stain.addColorStop(1, 'rgba(0,0,0,0)');
+	          tctx.fillStyle = stain; tctx.beginPath();
+	          tctx.ellipse(stx, sty, str, str * (.25 + grit() * .65), grit() * TAU, 0, TAU); tctx.fill();
+	        }
+	        tctx.globalAlpha = .12;
+	        tctx.strokeStyle = '#F6C5D7';
+	        tctx.lineWidth = 2;
+	        for (var sc = 0; sc < 13; sc++){
+	          var sx = grit() * S, sy = grit() * S;
+	          tctx.beginPath();
+	          tctx.moveTo(sx, sy);
+	          tctx.lineTo(sx + 30 + grit() * 150, sy + (grit() - .5) * 24);
+	          tctx.stroke();
+	        }
+	        tctx.restore();
 	
+	      }
 	      if (n > 1){
-	        tctx.strokeStyle = 'rgba(244,183,205,.74)';
+	        tctx.strokeStyle = tribeclub ? 'rgba(244,183,205,.74)' : theme.surface;
 	        tctx.lineWidth = 5;
 	        tctx.stroke();
 	      }
@@ -595,89 +608,91 @@ export function initGluecksrad() {
 	      tctx.restore();
 	    }
 	
-	    // Deutlich sichtbare, segmentübergreifende Schmutz- und Abriebschicht
-	    tctx.save();
-	    tctx.beginPath(); tctx.arc(c, c, R * .985, 0, TAU); tctx.clip();
-	    var wear = rngFrom(0xD17A6E21 ^ Math.imul(n, 374761393));
-	    for (var wd = 0; wd < 210; wd++){
-	      var wx = c + (wear() * 2 - 1) * R;
-	      var wy = c + (wear() * 2 - 1) * R;
-	      var wr = 8 + Math.pow(wear(), 1.7) * 95;
-	      var wa = .065 + wear() * .18;
-	      var dirt = tctx.createRadialGradient(wx, wy, 0, wx, wy, wr);
-	      if (wear() > .34){
-	        dirt.addColorStop(0, 'rgba(5,3,4,' + wa + ')');
-	        dirt.addColorStop(.55, 'rgba(18,8,11,' + (wa * .55) + ')');
-	      } else {
-	        dirt.addColorStop(0, 'rgba(120,52,43,' + (wa * .8) + ')');
-	        dirt.addColorStop(.55, 'rgba(75,29,30,' + (wa * .42) + ')');
+	    if (tribeclub) {
+	      // Deutlich sichtbare, segmentübergreifende Schmutz- und Abriebschicht
+	      tctx.save();
+	      tctx.beginPath(); tctx.arc(c, c, R * .985, 0, TAU); tctx.clip();
+	      var wear = rngFrom(0xD17A6E21 ^ Math.imul(n, 374761393));
+	      for (var wd = 0; wd < 210; wd++){
+	        var wx = c + (wear() * 2 - 1) * R;
+	        var wy = c + (wear() * 2 - 1) * R;
+	        var wr = 8 + Math.pow(wear(), 1.7) * 95;
+	        var wa = .065 + wear() * .18;
+	        var dirt = tctx.createRadialGradient(wx, wy, 0, wx, wy, wr);
+	        if (wear() > .34){
+	          dirt.addColorStop(0, 'rgba(5,3,4,' + wa + ')');
+	          dirt.addColorStop(.55, 'rgba(18,8,11,' + (wa * .55) + ')');
+	        } else {
+	          dirt.addColorStop(0, 'rgba(120,52,43,' + (wa * .8) + ')');
+	          dirt.addColorStop(.55, 'rgba(75,29,30,' + (wa * .42) + ')');
+	        }
+	        dirt.addColorStop(1, 'rgba(0,0,0,0)');
+	        tctx.fillStyle = dirt; tctx.beginPath();
+	        tctx.ellipse(wx, wy, wr, wr * (.18 + wear() * .55), wear() * TAU, 0, TAU); tctx.fill();
 	      }
-	      dirt.addColorStop(1, 'rgba(0,0,0,0)');
-	      tctx.fillStyle = dirt; tctx.beginPath();
-	      tctx.ellipse(wx, wy, wr, wr * (.18 + wear() * .55), wear() * TAU, 0, TAU); tctx.fill();
-	    }
-	    tctx.lineCap = 'round';
-	    for (var ws = 0; ws < 210; ws++){
-	      var wsa = wear() * TAU;
-	      var wsr = Math.sqrt(wear()) * R * .91;
-	      var wsx = c + Math.cos(wsa) * wsr;
-	      var wsy = c + Math.sin(wsa) * wsr;
-	      var wsl = 12 + Math.pow(wear(), 1.8) * 125;
-	      var wsv = wear() > .66;
-	      tctx.beginPath();
-	      tctx.moveTo(wsx, wsy);
-	      tctx.lineTo(wsx + Math.cos(wsa + (wear() - .5) * .6) * wsl, wsy + Math.sin(wsa + (wear() - .5) * .6) * wsl);
-	      tctx.lineWidth = wsv ? 3.1 : 1 + wear() * 2;
-	      tctx.strokeStyle = wsv ? 'rgba(248,217,226,.34)' : 'rgba(4,2,3,.46)';
-	      tctx.stroke();
-	    }
-	    // Abgeplatzte Lackinseln: helle Grundierung und dunkles blankes Material
-	    for (var wc = 0; wc < 165; wc++){
-	      var wca = wear() * TAU;
-	      var wcr = Math.sqrt(wear()) * R * .94;
-	      var wcx = c + Math.cos(wca) * wcr;
-	      var wcy = c + Math.sin(wca) * wcr;
-	      var wcw = 3 + Math.pow(wear(), 2) * 34;
-	      var wch = 1.5 + wear() * wcw * .42;
-	      tctx.save(); tctx.translate(wcx, wcy); tctx.rotate(wear() * TAU);
-	      tctx.beginPath();
-	      tctx.moveTo(-wcw*.5, 0); tctx.lineTo(-wcw*.18, -wch*.7);
-	      tctx.lineTo(wcw*.28, -wch*.45); tctx.lineTo(wcw*.5, wch*.12);
-	      tctx.lineTo(wcw*.08, wch*.65); tctx.lineTo(-wcw*.36, wch*.45); tctx.closePath();
-	      tctx.fillStyle = wear() > .43 ? 'rgba(7,5,6,.54)' : 'rgba(215,188,195,.30)';
-	      tctx.fill(); tctx.restore();
-	    }
-	    // Feine verzweigte Risse in der alten Lackschicht
-	    for (var cr = 0; cr < 34; cr++){
-	      var cra = wear() * TAU, crr = Math.sqrt(wear()) * R * .82;
-	      var crx = c + Math.cos(cra) * crr, cry = c + Math.sin(cra) * crr;
-	      var crang = wear() * TAU;
-	      tctx.beginPath(); tctx.moveTo(crx, cry);
-	      for (var cj = 0; cj < 4; cj++){
-	        var crlen = 8 + wear() * 22;
-	        crang += (wear() - .5) * .9;
-	        crx += Math.cos(crang) * crlen; cry += Math.sin(crang) * crlen;
-	        tctx.lineTo(crx, cry);
+	      tctx.lineCap = 'round';
+	      for (var ws = 0; ws < 210; ws++){
+	        var wsa = wear() * TAU;
+	        var wsr = Math.sqrt(wear()) * R * .91;
+	        var wsx = c + Math.cos(wsa) * wsr;
+	        var wsy = c + Math.sin(wsa) * wsr;
+	        var wsl = 12 + Math.pow(wear(), 1.8) * 125;
+	        var wsv = wear() > .66;
+	        tctx.beginPath();
+	        tctx.moveTo(wsx, wsy);
+	        tctx.lineTo(wsx + Math.cos(wsa + (wear() - .5) * .6) * wsl, wsy + Math.sin(wsa + (wear() - .5) * .6) * wsl);
+	        tctx.lineWidth = wsv ? 3.1 : 1 + wear() * 2;
+	        tctx.strokeStyle = wsv ? 'rgba(248,217,226,.34)' : 'rgba(4,2,3,.46)';
+	        tctx.stroke();
 	      }
-	      tctx.lineWidth = .8 + wear() * 1.2; tctx.strokeStyle = 'rgba(2,1,2,.48)'; tctx.stroke();
+	      // Abgeplatzte Lackinseln: helle Grundierung und dunkles blankes Material
+	      for (var wc = 0; wc < 165; wc++){
+	        var wca = wear() * TAU;
+	        var wcr = Math.sqrt(wear()) * R * .94;
+	        var wcx = c + Math.cos(wca) * wcr;
+	        var wcy = c + Math.sin(wca) * wcr;
+	        var wcw = 3 + Math.pow(wear(), 2) * 34;
+	        var wch = 1.5 + wear() * wcw * .42;
+	        tctx.save(); tctx.translate(wcx, wcy); tctx.rotate(wear() * TAU);
+	        tctx.beginPath();
+	        tctx.moveTo(-wcw*.5, 0); tctx.lineTo(-wcw*.18, -wch*.7);
+	        tctx.lineTo(wcw*.28, -wch*.45); tctx.lineTo(wcw*.5, wch*.12);
+	        tctx.lineTo(wcw*.08, wch*.65); tctx.lineTo(-wcw*.36, wch*.45); tctx.closePath();
+	        tctx.fillStyle = wear() > .43 ? 'rgba(7,5,6,.54)' : 'rgba(215,188,195,.30)';
+	        tctx.fill(); tctx.restore();
+	      }
+	      // Feine verzweigte Risse in der alten Lackschicht
+	      for (var cr = 0; cr < 34; cr++){
+	        var cra = wear() * TAU, crr = Math.sqrt(wear()) * R * .82;
+	        var crx = c + Math.cos(cra) * crr, cry = c + Math.sin(cra) * crr;
+	        var crang = wear() * TAU;
+	        tctx.beginPath(); tctx.moveTo(crx, cry);
+	        for (var cj = 0; cj < 4; cj++){
+	          var crlen = 8 + wear() * 22;
+	          crang += (wear() - .5) * .9;
+	          crx += Math.cos(crang) * crlen; cry += Math.sin(crang) * crlen;
+	          tctx.lineTo(crx, cry);
+	        }
+	        tctx.lineWidth = .8 + wear() * 1.2; tctx.strokeStyle = 'rgba(2,1,2,.48)'; tctx.stroke();
+	      }
+	      // Abgewetzte helle Stellen dort, wo Hände und Zeiger häufig entlanglaufen
+	      tctx.setLineDash([34,13,7,22,3,16]);
+	      tctx.beginPath(); tctx.arc(c, c, R * .72, 0, TAU);
+	      tctx.lineWidth = 20; tctx.strokeStyle = 'rgba(235,185,199,.15)'; tctx.stroke();
+	      tctx.setLineDash([]);
+	      tctx.restore();
+
+	      // Abgegriffene Kante und unregelmäßige Lackabplatzer
+	      tctx.save();
+	      tctx.beginPath(); tctx.arc(c, c, R * .966, 0, TAU);
+	      tctx.setLineDash([18,7,3,11,30,5]);
+	      tctx.lineWidth = 11; tctx.strokeStyle = 'rgba(247,204,219,.34)'; tctx.stroke();
+	      tctx.beginPath(); tctx.arc(c, c, R * .938, 0, TAU);
+	      tctx.setLineDash([7,13,2,19,22,8]);
+	      tctx.lineWidth = 8; tctx.strokeStyle = 'rgba(0,0,0,.46)'; tctx.stroke();
+	      tctx.setLineDash([]); tctx.restore();
+	
 	    }
-	    // Abgewetzte helle Stellen dort, wo Hände und Zeiger häufig entlanglaufen
-	    tctx.setLineDash([34,13,7,22,3,16]);
-	    tctx.beginPath(); tctx.arc(c, c, R * .72, 0, TAU);
-	    tctx.lineWidth = 20; tctx.strokeStyle = 'rgba(235,185,199,.15)'; tctx.stroke();
-	    tctx.setLineDash([]);
-	    tctx.restore();
-	
-	    // Abgegriffene Kante und unregelmäßige Lackabplatzer
-	    tctx.save();
-	    tctx.beginPath(); tctx.arc(c, c, R * .966, 0, TAU);
-	    tctx.setLineDash([18,7,3,11,30,5]);
-	    tctx.lineWidth = 11; tctx.strokeStyle = 'rgba(247,204,219,.34)'; tctx.stroke();
-	    tctx.beginPath(); tctx.arc(c, c, R * .938, 0, TAU);
-	    tctx.setLineDash([7,13,2,19,22,8]);
-	    tctx.lineWidth = 8; tctx.strokeStyle = 'rgba(0,0,0,.46)'; tctx.stroke();
-	    tctx.setLineDash([]); tctx.restore();
-	
 	    // Laufring, auf dem die Stifte sitzen
 	    tctx.beginPath(); tctx.arc(c, c, R * 0.945, 0, TAU);
 	    tctx.lineWidth = R * 0.085;
@@ -686,8 +701,8 @@ export function initGluecksrad() {
 	
 	    // Nabe
 	    tctx.beginPath(); tctx.arc(c, c, R * 0.115, 0, TAU);
-	    tctx.fillStyle = '#151115'; tctx.fill();
-	    tctx.lineWidth = 14; tctx.strokeStyle = '#9B7B86'; tctx.stroke();
+	    tctx.fillStyle = tribeclub ? '#151115' : theme.ink; tctx.fill();
+	    tctx.lineWidth = 14; tctx.strokeStyle = tribeclub ? '#9B7B86' : theme.surface; tctx.stroke();
 	
 	    if (texture) texture.needsUpdate = true;
 	  }
@@ -754,10 +769,10 @@ export function initGluecksrad() {
 	    camera.position.set(0, 1.1, 9.2);
 	    camera.lookAt(0, LOOK_Y, 0);
 	
-	    scene.add(new THREE.HemisphereLight(0xE8D9DE, 0x090709, 0.82));
-	    var key = new THREE.DirectionalLight(0xFFEAF2, 1.25);
+	    scene.add(new THREE.HemisphereLight((tribeclub ? 0xE8D9DE : 0xffffff), (tribeclub ? 0x090709 : 0x607080), 0.82));
+	    var key = new THREE.DirectionalLight((tribeclub ? 0xFFEAF2 : 0xffffff), 1.25);
 	    key.position.set(-3.5, 5, 6); scene.add(key);
-	    var warm = new THREE.PointLight(0xEF4F95, 1.15, 24);
+	    var warm = new THREE.PointLight(theme.accent, 1.15, 24);
 	    warm.position.set(4, -2.5, 5); scene.add(warm);
 	
 	    texture = new THREE.CanvasTexture(texCanvas);
@@ -772,10 +787,10 @@ export function initGluecksrad() {
 	    spinGroup = new THREE.Group();
 	    tilt.add(spinGroup);
 	
-	    var metalTex = makeMetalTexture();
+	    var metalTex = tribeclub ? makeMetalTexture() : null;
 	
 	    var faceMat = new THREE.MeshStandardMaterial({ map:texture, roughness:0.74, metalness:0.08 });
-	    var sideMat = new THREE.MeshStandardMaterial({ color:0x75666D, map:metalTex, bumpMap:metalTex, bumpScale:0.055, roughness:0.36, metalness:0.82 });
+	    var sideMat = new THREE.MeshStandardMaterial({ color:tribeclub ? 0x75666D : 0x839397, map:metalTex, bumpMap:metalTex, bumpScale:0.055, roughness:0.36, metalness:0.82 });
 	    var backMat = new THREE.MeshStandardMaterial({ color:0x080708, roughness:0.72, metalness:0.25 });
 	    var wheel = new THREE.Mesh(
 	      new THREE.CylinderGeometry(RADIUS, RADIUS, THICK, 128, 1, false),
@@ -783,8 +798,8 @@ export function initGluecksrad() {
 	    );
 	    spinGroup.add(wheel);
 	
-	    var steel = new THREE.MeshStandardMaterial({ color:0xA08F96, map:metalTex, bumpMap:metalTex, bumpScale:0.045, roughness:0.31, metalness:0.92 });
-	    var neon = new THREE.MeshStandardMaterial({ color:0xEF75AA, emissive:0x5A1533, emissiveIntensity:0.8, roughness:0.24, metalness:0.54 });
+	    var steel = new THREE.MeshStandardMaterial({ color:tribeclub ? 0xA08F96 : 0xb5c3c6, map:metalTex, bumpMap:metalTex, bumpScale:0.045, roughness:0.31, metalness:0.92 });
+	    var neon = new THREE.MeshStandardMaterial({ color:theme.accent, emissive:tribeclub ? 0x5A1533 : theme.accent, emissiveIntensity:tribeclub ? 0.8 : 0.2, roughness:0.24, metalness:0.54 });
 	    var ring = new THREE.Mesh(new THREE.TorusGeometry(RADIUS + 0.025, 0.14, 20, 128), steel);
 	    ring.rotation.x = Math.PI / 2;
 	    ring.position.y = THICK / 2 + 0.015;
@@ -836,7 +851,7 @@ export function initGluecksrad() {
 	    pointerPivot.position.set(0, THICK / 2 + FLAP_H, -(RADIUS + PIVOT_OUT));
 	    tilt.add(pointerPivot);
 	
-	    var rubber = new THREE.MeshStandardMaterial({ color:0x35141D, roughness:0.75, metalness:0.05 });
+	    var rubber = new THREE.MeshStandardMaterial({ color:theme.ink, roughness:0.75, metalness:0.05 });
 	    var tongue = new THREE.Mesh(new THREE.BoxGeometry(0.115, 0.04, FLAP_LEN), rubber);
 	    tongue.position.z = FLAP_LEN / 2;
 	    pointerPivot.add(tongue);
@@ -858,7 +873,7 @@ export function initGluecksrad() {
 	    while (pegGroup.children.length) pegGroup.remove(pegGroup.children[0]);
 	    if (n < 2) return;
 	    var geo = new THREE.CylinderGeometry(0.028, 0.032, 0.26, 10);
-	    var mat = new THREE.MeshStandardMaterial({ color:0xB8A4AC, roughness:0.22, metalness:0.9 });
+	    var mat = new THREE.MeshStandardMaterial({ color:tribeclub ? 0xB8A4AC : 0xb5c3c6, roughness:0.22, metalness:0.9 });
 	    var step = TAU / n;
 	    for (var i = 0; i < n; i++){
 	      var th = i * step;
@@ -1154,7 +1169,7 @@ export function initGluecksrad() {
 	
 	  /* ---------- Konfetti ---------- */
 	  function confetti(){
-	    var colors = ['#EE99AE', '#F5CDE1', '#C55451', '#A35150', '#FFF2F7'];
+	    var colors = tribeclub ? ['#EE99AE', '#F5CDE1', '#C55451', '#A35150', '#FFF2F7'] : theme.segments.concat([theme.surface]);
 	    for (var i = 0; i < 70; i++){
 	      (function(i){
 	        var f = document.createElement('div');
@@ -1245,7 +1260,7 @@ export function initGluecksrad() {
 	    } else {
 	      state.people.forEach(function(p){
 	        var pos = act.indexOf(p);
-	        var col = pos >= 0 ? palFor(pos, n).bg : '#B78594';
+	        var col = pos >= 0 ? palFor(pos, n).bg : (tribeclub ? '#B78594' : theme.ink);
 	        var li = document.createElement('li');
 	        li.className = 'row' + (p.on ? ' on' : '');
 	        li.tabIndex = 0;
@@ -1285,7 +1300,7 @@ export function initGluecksrad() {
 	    $('rmBox').style.opacity = 1;
 	    $('rmBox').parentElement.classList.toggle('on', state.removeWinner);
 	    $('rmBox').style.background = state.removeWinner ? 'var(--brass)' : 'transparent';
-	    $('rmBox').style.borderColor = state.removeWinner ? 'var(--brass)' : 'rgba(255,242,247,.38)';
+	    $('rmBox').style.borderColor = state.removeWinner ? 'var(--brass)' : 'var(--wheel-checkbox-border, rgba(255,242,247,.38))';
 	    $('rmBox').querySelector('svg').style.opacity = state.removeWinner ? 1 : 0;
 	    $('rmChk').checked = state.removeWinner;
 	
@@ -1449,7 +1464,7 @@ export function initGluecksrad() {
 	  paintSound();
 	  var ok = initThree();
 	  if (!ok){
-	    stage.innerHTML = '<p style="padding:24px;text-align:center;color:#D9A8B6">Die 3D-Bibliothek konnte nicht geladen werden. Prüf die Internetverbindung und lade die Seite neu.</p>';
+	    stage.innerHTML = '<p style="padding:24px;text-align:center;color:var(--cream-dim)">Die 3D-Bibliothek konnte nicht geladen werden. Prüf die Internetverbindung und lade die Seite neu.</p>';
 	    spinBtn.disabled = true;
 	  } else {
 	    store.load().then(function(saved){

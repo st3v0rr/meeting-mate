@@ -1,0 +1,191 @@
+/* The basic themes share the layout, with a quieter green or blue palette. */
+.gluecksrad[data-wheel-theme='default'] {
+	--basic-accent: #365e4c;
+	--basic-ink: #20382d;
+	--basic-muted: #476657;
+	--basic-bg: #cce3de;
+	--basic-surface: #f6fff8;
+	--basic-soft: #e4f0e9;
+	--basic-border: #a4c3b2;
+}
+
+.gluecksrad[data-wheel-theme='adorsys'] {
+	--basic-accent: #2f2cf9;
+	--basic-ink: #202952;
+	--basic-muted: #4a5680;
+	--basic-bg: #d9e0fc;
+	--basic-surface: #f5f7ff;
+	--basic-soft: #e7ebff;
+	--basic-border: #a9b5eb;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) {
+	--ink: var(--basic-ink);
+	--ink-2: var(--basic-ink);
+	--ink-3: var(--basic-accent);
+	--brass: var(--basic-accent);
+	--brass-dim: var(--basic-muted);
+	--cream: var(--basic-surface);
+	--cream-dim: var(--basic-muted);
+	--wheel-checkbox-border: var(--basic-border);
+	--display: 'Inter Tight', system-ui, sans-serif;
+	background: linear-gradient(145deg, var(--basic-surface), var(--basic-bg));
+	color: var(--basic-ink);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub'])::before,
+.gluecksrad:not([data-wheel-theme='tribeclub'])::after,
+.gluecksrad:not([data-wheel-theme='tribeclub']) h1::after,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .stage-wrap::before,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .foam-bg {
+	display: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) h1 {
+	color: var(--basic-accent);
+	font-style: normal;
+	font-size: clamp(38px, 6vw, 64px);
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+	transform: none;
+	text-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .eyebrow::before {
+	box-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .tagline,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .hint,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .opt,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .empty-list,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket .sub {
+	color: var(--basic-muted);
+	text-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .panel,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket {
+	background: var(--basic-surface);
+	color: var(--basic-ink);
+	border: 1px solid var(--basic-border);
+	box-shadow: 0 16px 40px rgb(0 0 0 / 8%);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .panel-head h2,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .count,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket .who {
+	color: var(--basic-accent);
+	font-style: normal;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) textarea#nameInput {
+	background: white;
+	color: var(--basic-ink);
+	border-color: var(--basic-border);
+	box-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) textarea#nameInput::placeholder {
+	color: var(--basic-muted);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-add,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .t-primary,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin {
+	background: var(--basic-accent);
+	color: white;
+	border: 1px solid var(--basic-accent);
+	box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-add:hover,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .t-primary:hover,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin:hover {
+	background: var(--basic-accent);
+	filter: brightness(1.1);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin {
+	border-radius: 14px;
+	font-style: normal;
+	font-size: 24px;
+	text-transform: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin::before {
+	background: rgb(255 255 255 / 25%);
+	border-radius: 10px;
+	box-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin.charging,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin:active,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .btn-spin[disabled] {
+	border-color: var(--basic-accent);
+	box-shadow: 0 2px 6px rgb(0 0 0 / 12%);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .chip,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .sound,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .t-ghost {
+	background: var(--basic-surface);
+	color: var(--basic-accent);
+	border-color: var(--basic-border);
+	box-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .chip:hover,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .sound:hover,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .t-ghost:hover,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .row:hover {
+	background: var(--basic-soft);
+	color: var(--basic-accent);
+	border-color: var(--basic-accent);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .row,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .opt,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .box {
+	border-color: var(--basic-border);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .box {
+	color: white;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .box svg path {
+	stroke: currentColor;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .row.on .box {
+	box-shadow: none;
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .row:not(.on) .nm,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .del {
+	color: var(--basic-muted);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .del:hover {
+	color: var(--basic-ink);
+	background: var(--basic-soft);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .av,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket .av-big {
+	box-shadow: 0 0 0 1px var(--basic-border);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .stage canvas {
+	filter: drop-shadow(0 20px 24px rgb(0 0 0 / 18%));
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .overlay {
+	background: rgb(15 25 35 / 55%);
+}
+
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket::before,
+.gluecksrad:not([data-wheel-theme='tribeclub']) .ticket::after {
+	display: none;
+}

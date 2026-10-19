@@ -9,15 +9,15 @@ const themes: Theme[] = ['default', 'adorsys', 'tribeclub']
 function getInitialTheme(): Theme {
 	if (!browser) return 'default'
 	
+	// Explicit URL themes take precedence over a saved preference.
+	const params = new URLSearchParams(window.location.search)
+	if (params.has('tc')) return 'tribeclub'
+	if (params.has('ad')) return 'adorsys'
+
 	const stored = localStorage.getItem('theme') as Theme
 	if (stored && themes.includes(stored)) {
 		return stored
 	}
-	
-	// Check URL params
-	const params = new URLSearchParams(window.location.search)
-	if (params.has('tc')) return 'tribeclub'
-	if (params.has('ad')) return 'adorsys'
 	
 	return 'default'
 }

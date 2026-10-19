@@ -66,6 +66,8 @@ The app supports multiple themes using CSS variables:
 - **TribeClub** - Red tones
 
 Themes persist in localStorage and can be changed in Settings.
+The wheel follows the selected theme: green “Glücksrad”, blue “adorsys”, or the dark TribeClub design.
+Explicit `?tc` and `?ad` URL parameters take precedence over the saved theme.
 
 ## Development 👨‍💻
 
