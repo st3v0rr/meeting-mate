@@ -1,8 +1,11 @@
 // @ts-nocheck
-// Unveraenderte Portierung von Vanilla-JS: bewusst nicht typgeprueft.
+// Portierung von Vanilla-JS: bewusst nicht typgeprueft.
 // Portiert aus output/2026-08-21_gluecksrad-tribe-club.html.
 // Der Code arbeitet direkt auf dem DOM und wird nach dem Mount einmalig gestartet.
 // Erwartet, dass THREE global verfuegbar ist.
+
+import { get } from 'svelte/store';
+import { members } from '../../stores/members';
 
 export function initGluecksrad() {
 	(function(){
@@ -411,32 +414,27 @@ export function initGluecksrad() {
 	
 	  /* ---------- Zustand ---------- */
 	  var state = {
-	    people: [
-	      { id:'p1',  name:'Annina', on:true, look:{ hair:'blond',       style:'lang'    , beard:false } },
-	      { id:'p2',  name:'Andi',   on:true, look:{ hair:'schwarz',     style:'kurz',    beard:true } },
-	      { id:'p3',  name:'Nadja',  on:true, look:{ hair:'dunkelblond', style:'mittel'  , beard:false } },
-	      { id:'p4',  name:'Jana',   on:true, look:{ hair:'schwarz',     style:'lang',    skin:1 , beard:false } },
-	      { id:'p5',  name:'Sajjad', on:true, look:{ hair:'schwarz',     style:'kurz',    skin:2 , beard:false } },
-	      { id:'p6',  name:'Tobi',   on:true, look:{ hair:'blond',       style:'kurz'    , beard:false } },
-	      { id:'p7',  name:'Flo',    on:true, look:{ style:'muetze' , beard:false } },
-	      { id:'p8',  name:'Mario',  on:true, look:{ hair:'schwarz',     style:'kurz'    , beard:false } },
-	      { id:'p9',  name:'Nina',   on:true, look:{ hair:'blond',       style:'mittel'  , beard:false } },
-	      { id:'p10', name:'Gunnar', on:true, look:{ hair:'dunkelblond', style:'stoppel' , beard:false } },
-	      { id:'p11', name:'Thomas', on:true, look:{ hair:'rot',         style:'kurz',    glasses:true , beard:false } },
-	      { id:'p12', name:'Jakob',  on:true, look:{ hair:'braun',       style:'glatze',   shirt:'#4A90B8', beard:true } }
-	    ],
+	    people: get(members).map(function(member, index){
+	      return { id:'p' + (index + 1), name:member.name, on:member.present };
+	    }),
 	    removeWinner:false,
 	    sound:true
 	  };
-	  var uid = 100;
+	  var uid = state.people.length;
 	  function newId(){ uid += 1; return 'p' + uid; }
 	  function active(){ return state.people.filter(function(p){ return p.on; }); }
 	
 	  var store = {
 	    save:function(){
+	      members.update(function(current){
+	        return state.people.map(function(person, index){
+	          var existing = current.find(function(member){ return member.name === person.name; });
+	          return { name:person.name, present:person.on, rank:existing ? existing.rank : index };
+	        });
+	      });
 	      try{
 	        if(!window.storage) return;
-	        window.storage.set('gluecksrad:v2', JSON.stringify(state))['catch'](function(){});
+	        window.storage.set('gluecksrad:v2', JSON.stringify({ removeWinner:state.removeWinner, sound:state.sound }))['catch'](function(){});
 	      }catch(e){}
 	    },
 	    load:function(){
@@ -1151,6 +1149,7 @@ export function initGluecksrad() {
 	    var p = state.people.find(function(x){ return x.id === id; });
 	    if (p) p.on = false;
 	    render();
+	    store.save();
 	  }
 	
 	  /* ---------- Konfetti ---------- */
@@ -1304,7 +1303,9 @@ export function initGluecksrad() {
 	      .map(function(s){ return s.length > 40 ? s.slice(0, 40) : s; });
 	    if (!parts.length) return;
 	    parts.forEach(function(nm){
-	      state.people.push({ id:newId(), name:nm, on:true });
+	      if (!state.people.some(function(person){ return person.name === nm; })) {
+	        state.people.push({ id:newId(), name:nm, on:true });
+	      }
 	    });
 	    inputEl.value = '';
 	    inputEl.style.height = 'auto';
@@ -1452,14 +1453,9 @@ export function initGluecksrad() {
 	    spinBtn.disabled = true;
 	  } else {
 	    store.load().then(function(saved){
-	      if (saved && Array.isArray(saved.people)){
-	        state.people = saved.people;
+	      if (saved){
 	        state.removeWinner = !!saved.removeWinner;
 	        state.sound = saved.sound !== false;
-	        saved.people.forEach(function(p){
-	          var num = parseInt(String(p.id).replace(/\D/g, ''), 10);
-	          if (num > uid) uid = num;
-	        });
 	        paintSound();
 	      }
 	      render();

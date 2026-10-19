@@ -43,6 +43,10 @@ npm run preview
 3. Start the countdown timer
 4. Shuffle participants if needed
 
+The dice icon opens the wheel with the shared participant list and attendance status.
+Adding, deleting, or selecting participants in the wheel also updates the meeting list.
+Without a participant URL parameter or manually added members, the wheel starts empty.
+
 ### URL Parameters
 - `?tc` - Use TribeClub theme
 - `?ad` - Use Adorsys theme  
