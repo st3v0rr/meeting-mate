@@ -3,6 +3,7 @@
 	import { initGluecksrad } from './gluecksrad.js'
 	import { themeStore } from '$lib/stores/theme'
 	import { wheelThemes } from './themes'
+	import MdArrowBack from 'svelte-icons/md/MdArrowBack.svelte'
 	import './themes.css'
 
 	const wheelTheme = $derived(wheelThemes[$themeStore])
@@ -50,9 +51,20 @@
 
 	<div class="gr-app">
 		<header class="masthead">
-			<div>
-				<div class="eyebrow">Los geht’s</div>
-				<h1>{wheelTheme.label}</h1>
+			<div class="brand">
+				<button
+					class="back-button"
+					type="button"
+					onclick={() => window.history.back()}
+					aria-label="Zurück"
+					title="Zurück"
+				>
+					<MdArrowBack />
+				</button>
+				<div>
+					<div class="eyebrow">Los geht’s</div>
+					<h1>{wheelTheme.label}</h1>
+				</div>
 			</div>
 			<p class="tagline">
 				Namen eintragen, abschütteln, fertig. Wer rausfällt, zeigt, was als Nächstes ansteht.
@@ -140,6 +152,28 @@
 	Alle Regeln sind auf .gluecksrad eingegrenzt, damit nichts in andere Routen leckt.
 -->
 <style>
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-width: 0;
+	}
+
+	.back-button {
+		flex: 0 0 28px;
+		width: 28px;
+		height: 36px;
+		padding: 0;
+		border: none;
+		background: transparent;
+		color: var(--brass);
+		cursor: pointer;
+	}
+
+	.back-button:hover {
+		opacity: 0.75;
+	}
+
 	:global(.gluecksrad) {
 		position: fixed;
 		inset: 0;
